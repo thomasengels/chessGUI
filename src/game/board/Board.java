@@ -23,6 +23,7 @@ public class Board {
             for(Tile tile : items) {
                 if(tile.toString().trim().equals(position)) {
                     result = tile;
+                    break;
                 }
             }
         }
@@ -39,14 +40,8 @@ public class Board {
         Tile[] result = new Tile[positions.length];
         int counter = 0;
         for(String string : positions) {
-            for(int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (tiles[i][j].toString().equals(string)) {
-                        result[counter] = tiles[i][j];
-                        counter++;
-                    }
-                }
-            }
+            result[counter] = getTile(string);
+            counter++;
         }
         return result;
     }

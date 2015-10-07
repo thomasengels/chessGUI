@@ -38,7 +38,7 @@ public class Pawn extends Piece {
         int modifier = color.equals("White") ? 1 : -1;
         String column = position.toString().substring(0, 1);
         int columnIndex = Arrays.asList(columns).indexOf(column);
-        int row = Integer.parseInt(position.toString().substring(1, 1));
+        int row = Integer.parseInt(position.toString().substring(1, 2));
         String tilesString = "";
         if ((row == 2 && color.equals("White")) || (row == 7 && color.equals("Black"))) {
             tilesString = column + (row + (modifier * 2)) + ",";

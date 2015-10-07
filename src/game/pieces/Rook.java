@@ -15,7 +15,7 @@ public class Rook extends Piece {
     public List<Tile> getMoves(Board board) {
         List<Tile> result = new ArrayList<Tile>();
         String column = position.getLocation().substring(0, 1);
-        int row = Integer.parseInt(position.getLocation().substring(1, 1));
+        int row = Integer.parseInt(position.getLocation().substring(1, 2));
         result.addAll(checkUp(board, column, row));
         result.addAll(checkDown(board, column, row));
         result.addAll(checkLeft(board, column, row));

@@ -19,7 +19,7 @@ public class Queen extends Piece {
     List<Tile> getMoves(Board board) {
         List<Tile> result = new ArrayList<Tile>();
         String column = position.getLocation().substring(0, 1);
-        int row = Integer.parseInt(position.getLocation().substring(1, 1));
+        int row = Integer.parseInt(position.getLocation().substring(1, 2));
         result.addAll(checkLeftUp(board, column, row));
         result.addAll(checkLeftDown(board, column, row));
         result.addAll(checkRightDown(board, column, row));

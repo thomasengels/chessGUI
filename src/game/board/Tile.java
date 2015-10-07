@@ -44,11 +44,7 @@ public class Tile{
 
     @Override
     public String toString() {
-        if (piece == null) {
-            return location + "";
-        } else {
-            return " " + piece.getClass().getSimpleName().substring(0, 1) + " ";
-        }
+        return location + " ";
     }
 
     public void setChessboardTileImage(String chessboardTileImage) {

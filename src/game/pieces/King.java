@@ -20,7 +20,7 @@ public class King extends Piece {
         List<Tile> result = new ArrayList<Tile>();
         String column = position.getLocation().substring(0, 1);
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
-        int row = Integer.parseInt(position.getLocation().substring(1, 1));
+        int row = Integer.parseInt(position.getLocation().substring(1, 2));
         if (columnIndex - 1 >= 0) {
             if (row + 1 < 9) {
                 Tile temp = board.getTile(board.getColumns()[columnIndex - 1] + (row + 1));

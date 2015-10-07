@@ -39,32 +39,32 @@ public class SetupBoard{
         String[] order = {"rook","knight","bishop","queen","king","bishop","knight","rook"};
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 2; j++){
-                game.getBoard().getTile(i,j).getPiece().setChesspieceImage(new Image(getClass().getResourceAsStream(
-                        game.getBoard().getTile(i,j).getPiece().getClass().getSimpleName() +
-                        game.getBoard().getTile(i,j).getPiece().getColor() + ".png")));
-                game.getBoard().getTile(i,j).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
+                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().setChesspieceImage(new Image(getClass().getResourceAsStream(
+                        game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getClass().getSimpleName() +
+                                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getColor() + ".png")));
+                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
                     pieceForReposition = game.getBoard().getTile((int) e.getSceneX()/45, (int) e.getSceneY()/45).getPiece();
                     inRepositionState = true;
                     checkboardPane.getChildren().remove(e.getSource());
                 });
 
-                checkboardPane.setConstraints(game.getBoard().getTile(i,j).getPiece().getChesspieceImageView(), i, j);
-                checkboardPane.getChildren().add(game.getBoard().getTile(i,j).getPiece().getChesspieceImageView());
+                checkboardPane.setConstraints(game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView(), i, j);
+                checkboardPane.getChildren().add(game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView());
 
             }
         }
         for(int i = 0; i < 8; i++){
             for(int j = 6; j < 8; j++){
-                game.getBoard().getTile(i,j).getPiece().setChesspieceImage(new Image(getClass().getResourceAsStream(
-                        game.getBoard().getTile(i,j).getPiece().getClass().getSimpleName() +
-                                game.getBoard().getTile(i,j).getPiece().getColor() + ".png")));
-                game.getBoard().getTile(i,j).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
+                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().setChesspieceImage(new Image(getClass().getResourceAsStream(
+                        game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getClass().getSimpleName() +
+                                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getColor() + ".png")));
+                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
                     pieceForReposition = game.getBoard().getTile((int) e.getSceneX()/45, (int) e.getSceneY()/45).getPiece();
                     inRepositionState = true;
                     checkboardPane.getChildren().remove(e.getSource());
                 });
-                checkboardPane.setConstraints(game.getBoard().getTile(i,j).getPiece().getChesspieceImageView(), i, j);
-                checkboardPane.getChildren().add(game.getBoard().getTile(i,j).getPiece().getChesspieceImageView());
+                checkboardPane.setConstraints(game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView(), i, j);
+                checkboardPane.getChildren().add(game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView());
 
             }
         }

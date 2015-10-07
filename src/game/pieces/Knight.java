@@ -21,7 +21,7 @@ public class Knight extends Piece {
         List<Tile> result = new ArrayList<Tile>();
         String column = position.getLocation().substring(0, 1);
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
-        int row = Integer.parseInt(position.getLocation().substring(1, 1));
+        int row = Integer.parseInt(position.getLocation().substring(1, 2));
         if(row + 1 != 9) {
             if(columnIndex + 2 < 8) {
                 Tile temp = board.getTile(board.getColumns()[columnIndex + 2] + (row + 1));
