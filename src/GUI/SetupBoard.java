@@ -47,6 +47,9 @@ public class SetupBoard{
                         game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getClass().getSimpleName() +
                                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getColor() + ".png")));
                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
+                    if(pieceForReposition != null){
+                        repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
+                    }
                     pieceForReposition = game.getBoard().getTile((int) e.getSceneX()/45, (int) e.getSceneY()/45).getPiece();
                     inRepositionState = true;
                     paintPossibleMoves(pieceForReposition.getMoves(game.getBoard()));
@@ -104,6 +107,9 @@ public class SetupBoard{
                 game.getBoard().getTile(i, j).getChessboardTileImageView().setOnMouseClicked(e -> {
                     if (inRepositionState) {
                         try {
+                            if(checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))){
+                                takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece());
+                            }
                             repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                             pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)));
 
@@ -126,7 +132,7 @@ public class SetupBoard{
 
                 checkboardPane.setConstraints(game.getBoard().getTile(i,j).getChessboardTileImageView(), i, j);
 
-                checkboardPane.getChildren().add(game.getBoard().getTile(i,j).getChessboardTileImageView());
+                checkboardPane.getChildren().add(game.getBoard().getTile(i, j).getChessboardTileImageView());
             }
         }
     }
@@ -165,6 +171,18 @@ public class SetupBoard{
                             tile.getChessboardTileImageView()))).setImage(
                     tile.getInitialTileColorImage());
         }
+    }
+
+    public boolean checkIfTileOccupid(Tile tile){
+        if(tile.getPiece() != null){
+            return true;
+        }
+        return false;
+    }
+
+    public void takePieceFromBoard(Piece piece){
+        lostPieces.getChildren().add(piece.getChesspieceImageView());
+        checkboardPane.getChildren().remove(piece.getChesspieceImageView());
     }
 
 }
