@@ -98,16 +98,22 @@ public class SetupBoard{
                 game.getBoard().getTile(i, j).getChessboardTileImageView().setOnMouseClicked(e -> {
                     if (inRepositionState) {
                         try {
-                            pieceForReposition.move(game.getBoard(), game.getBoard().getTile((int) e.getSceneX() / 45, (int) e.getSceneY() / 45));
+                            pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)));
+
+                            checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
+                            System.out.println(((int) e.getY()) / 8 + " " + ((int) e.getX()) / 8);
+
+
+                            inRepositionState = false;
+
+                            System.out.println(game.getBoard().toString());
                         } catch (InvalidMoveException e1) {
+                            checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
+
                             e1.printStackTrace();
                         }
 
-                        checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
-                        System.out.println(((int) e.getY()) / 8 + " " + ((int) e.getX()) / 8);
-                        checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
 
-                        inRepositionState = false;
                     }
                 });
 
