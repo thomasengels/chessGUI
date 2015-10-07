@@ -89,7 +89,7 @@ public class Bishop extends Piece {
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
         for(int i = 1; i <= 7; i++) {
             if(columnIndex + i >= 7  && row + i <= 8) {
-                Tile temp = board.getTile(board.getColumns()[columnIndex - i] + (row +i));
+                Tile temp = board.getTile(board.getColumns()[columnIndex + i] + (row - i));
                 if (temp.getPiece() == null) {
                     result.add(temp);
                 } else if (!temp.getPiece().getColor().equals(color)){
