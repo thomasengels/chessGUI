@@ -17,7 +17,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    List<Tile> getMoves(Board board) {
+    public List<Tile> getMoves(Board board) {
         List<Tile> result = new ArrayList<Tile>();
         String column = position.getLocation().substring(0, 1);
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);

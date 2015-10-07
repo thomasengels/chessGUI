@@ -16,7 +16,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    List<Tile> getMoves(Board board) {
+    public List<Tile> getMoves(Board board) {
         List<Tile> result = new ArrayList<Tile>();
         String column = position.getLocation().substring(0, 1);
         int row = Integer.parseInt(position.getLocation().substring(1, 2));

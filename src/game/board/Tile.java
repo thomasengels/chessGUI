@@ -14,6 +14,8 @@ public class Tile{
     private Piece piece;
     private Image chessboardTileImage;
     private ImageView chessboardTileImageView;
+    private Image tilePossibleMoveImage;
+    private Image initialTileColorImage;
 
     public Tile(String location) {
         this.location = location;
@@ -50,6 +52,7 @@ public class Tile{
     public void setChessboardTileImage(String chessboardTileImage) {
         this.chessboardTileImage = new Image(getClass().getResourceAsStream(chessboardTileImage + ".jpg"));
         setCheckboardTileImageView(new ImageView(this.chessboardTileImage));
+        setInitialTileColorImage(this.chessboardTileImage);
     }
 
     public ImageView getChessboardTileImageView() {
@@ -58,6 +61,22 @@ public class Tile{
 
     public void setCheckboardTileImageView(ImageView checkboardTileImageView) {
         this.chessboardTileImageView = checkboardTileImageView;
+    }
+
+    public Image getInitialTileColorImage() {
+        return initialTileColorImage;
+    }
+
+    public void setInitialTileColorImage(Image initialTileColorImage) {
+        this.initialTileColorImage = initialTileColorImage;
+    }
+
+    public Image getTilePossibleMoveImage() {
+        return tilePossibleMoveImage;
+    }
+
+    public void setTilePossibleMoveImage(Image tilePossibleMoveImage) {
+        this.tilePossibleMoveImage = tilePossibleMoveImage;
     }
 
     @Override

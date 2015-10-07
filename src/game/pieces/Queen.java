@@ -16,7 +16,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    List<Tile> getMoves(Board board) {
+    public List<Tile> getMoves(Board board) {
         List<Tile> result = new ArrayList<Tile>();
         String column = position.getLocation().substring(0, 1);
         int row = Integer.parseInt(position.getLocation().substring(1, 2));
@@ -31,7 +31,7 @@ public class Queen extends Piece {
         return result;
     }
 
-    private List<Tile>  checkLeftUp(Board board, String column, int row) {
+    private List<Tile> checkLeftUp(Board board, String column, int row) {
         List<Tile> result = new ArrayList<Tile>();
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
         for(int i = 1; i <= 7; i++) {

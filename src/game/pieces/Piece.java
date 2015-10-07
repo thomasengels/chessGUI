@@ -50,7 +50,7 @@ public abstract class Piece {
         this.chesspieceImageView = chesspieceImageView;
     }
 
-    abstract List<Tile> getMoves(Board board);
+    public abstract List<Tile> getMoves(Board board);
 
     public String getColor() {
         return color;
