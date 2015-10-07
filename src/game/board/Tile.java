@@ -60,4 +60,19 @@ public class Tile{
         this.chessboardTileImageView = checkboardTileImageView;
     }
 
+    @Override
+     public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tile)) return false;
+
+        Tile tile = (Tile) o;
+
+        return location.equals(tile.location);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return location.hashCode();
+    }
 }

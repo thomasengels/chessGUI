@@ -25,7 +25,7 @@ public abstract class Piece {
     }
 
     public void move(Board board, Tile position) throws InvalidMoveException {
-        if (Arrays.asList(getMoves(board)).contains(position)) {
+        if (getMoves(board).contains(position)) {
             this.position = position;
             position.setPiece(this);
         } else {
