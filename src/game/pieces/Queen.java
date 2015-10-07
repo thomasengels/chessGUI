@@ -93,7 +93,7 @@ public class Queen extends Piece {
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
         for(int i = 1; i <= 7; i++) {
             if(columnIndex + i <= 7  && row - i >= 1) {
-                Tile temp = board.getTile(board.getColumns()[columnIndex + i] + (row +i));
+                Tile temp = board.getTile(board.getColumns()[columnIndex + i] + (row -i));
                 if (temp.getPiece() == null) {
                     result.add(temp);
                 } else if (!temp.getPiece().getColor().equals(color)){
@@ -142,7 +142,7 @@ public class Queen extends Piece {
     private List<Tile> checkLeft(Board board, String column, int row) {
         List<Tile> result = new ArrayList<Tile>();
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
-        for(int i = columnIndex -1; i >= 1; i--) {
+        for(int i = columnIndex -1; i >= 0; i--) {
             Tile temp = board.getTile(board.getColumns()[i] + row);
             if (temp.getPiece() == null) {
                 result.add(temp);
