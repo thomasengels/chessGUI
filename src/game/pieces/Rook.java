@@ -79,7 +79,7 @@ public class Rook extends Piece {
     private List<Tile> checkRight(Board board, String column, int row) {
         List<Tile> result = new ArrayList<Tile>();
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
-        for(int i = columnIndex +1; i <= 8; i++) {
+        for(int i = columnIndex +1; i <= 7; i++) {
             Tile temp = board.getTile(board.getColumns()[i] + row);
             if (temp.getPiece() == null) {
                 result.add(temp);

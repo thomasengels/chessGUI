@@ -28,7 +28,7 @@ public class King extends Piece {
                     result.add(temp);
                 }
             }
-            if (row - 1 < 9) {
+            if (row - 1 > 0) {
                 Tile temp = board.getTile(board.getColumns()[columnIndex - 1] + (row - 1));
                 if (temp.getPiece() == null || !temp.getPiece().getColor().equals(color)) {
                     result.add(temp);
@@ -46,7 +46,7 @@ public class King extends Piece {
                     result.add(temp);
                 }
             }
-            if (row - 1 < 9) {
+            if (row - 1 > 0) {
                 Tile temp = board.getTile(board.getColumns()[columnIndex + 1] + (row - 1));
                 if (temp.getPiece() == null || !temp.getPiece().getColor().equals(color)) {
                     result.add(temp);

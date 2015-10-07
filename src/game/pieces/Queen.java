@@ -73,7 +73,7 @@ public class Queen extends Piece {
         List<Tile> result = new ArrayList<Tile>();
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
         for(int i = 1; i <= 7; i++) {
-            if(columnIndex + i >= 7  && row + i <= 8) {
+            if(columnIndex + i <= 7  && row + i <= 8) {
                 Tile temp = board.getTile(board.getColumns()[columnIndex + i] + (row +i));
                 if (temp.getPiece() == null) {
                     result.add(temp);
@@ -92,8 +92,8 @@ public class Queen extends Piece {
         List<Tile> result = new ArrayList<Tile>();
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
         for(int i = 1; i <= 7; i++) {
-            if(columnIndex + i >= 7  && row + i <= 8) {
-                Tile temp = board.getTile(board.getColumns()[columnIndex - i] + (row +i));
+            if(columnIndex + i <= 7  && row - i >= 1) {
+                Tile temp = board.getTile(board.getColumns()[columnIndex + i] + (row +i));
                 if (temp.getPiece() == null) {
                     result.add(temp);
                 } else if (!temp.getPiece().getColor().equals(color)){
@@ -159,7 +159,7 @@ public class Queen extends Piece {
     private List<Tile> checkRight(Board board, String column, int row) {
         List<Tile> result = new ArrayList<Tile>();
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
-        for(int i = columnIndex +1; i <= 8; i++) {
+        for(int i = columnIndex +1; i <= 7; i++) {
             Tile temp = board.getTile(board.getColumns()[i] + row);
             if (temp.getPiece() == null) {
                 result.add(temp);
