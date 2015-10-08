@@ -139,18 +139,23 @@ public class SetupBoard{
                 game.getBoard().getTile(i, j).getChessboardTileImageView().setOnMouseClicked(e -> {
                     if (inRepositionState) {
                         try {
-                            if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
-                                takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece());
-                            }
                             repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                             /*
-                              if lostpieces vbox is visible, the extra width of screen has to be taken in account
+                              if lostpieces vbox is visible, the extra width of screen has to be taken in account  (int) (e.getSceneX() / 45) - 1
                              */
                             if(lostPieces.getWidth() > 0) {
+                                if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)))) {
+                                    takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)).getPiece());
+                                }
+                                repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                                 pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)));
                                 checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) (e.getSceneX()) / 45) - 1, ((int) e.getSceneY()) / 45);
                             }
                             else {
+                                if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
+                                    takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece());
+                                }
+                                repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                                 pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)));
                                 checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
                             }
