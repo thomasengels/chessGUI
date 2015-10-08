@@ -1,9 +1,11 @@
 package GUI;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import game.Game;
 import game.board.Tile;
 import game.errors.InvalidMoveException;
 import game.pieces.*;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,20 +42,33 @@ public class SetupBoard{
     }
 
     public void placePieces(){
-        String[] order = {"rook","knight","bishop","queen","king","bishop","knight","rook"};
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 2; j++){
                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().setChesspieceImage(new Image(getClass().getResourceAsStream(
                         game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getClass().getSimpleName() +
                                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getColor() + ".png")));
                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
-                    if(pieceForReposition != null){
-                        repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
+                    System.out.println(inRepositionState);
+                    if(!inRepositionState) {
+                        /*
+                        if you have selected a piece, but you change your mind, the suggested move tile color (blue) will be reset to black or white
+                         */
+                        if (pieceForReposition != null) {
+                            repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
+                        }
+                        /*
+                        if lostpieces vbox is visible, the extra width of screen has to be taken in account
+                        */
+                        if(lostPieces.getWidth() > 0){
+                            pieceForReposition = game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)).getPiece();
+                        }
+                        else{
+                            pieceForReposition = game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece();
+                        }
+                        inRepositionState = true;
+                        paintPossibleMoves(pieceForReposition.getMoves(game.getBoard()));
+                        checkboardPane.getChildren().remove(e.getSource());
                     }
-                    pieceForReposition = game.getBoard().getTile((int) e.getSceneX()/45, (int) e.getSceneY()/45).getPiece();
-                    inRepositionState = true;
-                    paintPossibleMoves(pieceForReposition.getMoves(game.getBoard()));
-                    checkboardPane.getChildren().remove(e.getSource());
                 });
 
                 checkboardPane.setConstraints(game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView(), i, j);
@@ -67,13 +82,30 @@ public class SetupBoard{
                         game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getClass().getSimpleName() +
                                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getColor() + ".png")));
                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
-                    pieceForReposition = game.getBoard().getTile(convertXYtoA1((int) e.getSceneX()/45, (int) e.getSceneY()/45)).getPiece();
-                    inRepositionState = true;
-                    paintPossibleMoves(pieceForReposition.getMoves(game.getBoard()));
-                    checkboardPane.getChildren().remove(e.getSource());
+                    if(!inRepositionState) {
+                        /*
+                        if you have selected a piece, but you change your mind, the suggested move tile color (blue) will be reset to black or white
+                         */
+                        if (pieceForReposition != null) {
+                            repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
+                        }
+                        /*
+                        if lostpieces vbox is visible, the extra width of screen has to be taken in account
+                        */
+                        if(lostPieces.getWidth() > 0){
+                            pieceForReposition = game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)).getPiece();
+                        }
+                        else{
+                            pieceForReposition = game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece();
+                        }
+
+                        inRepositionState = true;
+                        paintPossibleMoves(pieceForReposition.getMoves(game.getBoard()));
+                        checkboardPane.getChildren().remove(e.getSource());
+                    }
                 });
-                checkboardPane.setConstraints(game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView(), i, j);
-                checkboardPane.getChildren().add(game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView());
+                checkboardPane.setConstraints(game.getBoard().getTile(convertXYtoA1(i, j)).getPiece().getChesspieceImageView(), i, j);
+                checkboardPane.getChildren().add(game.getBoard().getTile(convertXYtoA1(i, j)).getPiece().getChesspieceImageView());
 
             }
         }
@@ -107,13 +139,23 @@ public class SetupBoard{
                 game.getBoard().getTile(i, j).getChessboardTileImageView().setOnMouseClicked(e -> {
                     if (inRepositionState) {
                         try {
-                            if(checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))){
+                            if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
                                 takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece());
                             }
                             repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
-                            pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)));
+                            /*
+                              if lostpieces vbox is visible, the extra width of screen has to be taken in account
+                             */
+                            if(lostPieces.getWidth() > 0) {
+                                pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)));
+                                checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) (e.getSceneX()) / 45) - 1, ((int) e.getSceneY()) / 45);
+                            }
+                            else {
+                                pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)));
+                                checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
+                            }
 
-                            checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
+
                             System.out.println(((int) e.getY()) / 8 + " " + ((int) e.getX()) / 8);
 
                             checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
@@ -121,8 +163,6 @@ public class SetupBoard{
 
                             System.out.println(game.getBoard().toString());
                         } catch (InvalidMoveException e1) {
-                            checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
-
                             e1.printStackTrace();
                         }
 
@@ -130,7 +170,7 @@ public class SetupBoard{
                     }
                 });
 
-                checkboardPane.setConstraints(game.getBoard().getTile(i,j).getChessboardTileImageView(), i, j);
+                checkboardPane.setConstraints(game.getBoard().getTile(i, j).getChessboardTileImageView(), i, j);
 
                 checkboardPane.getChildren().add(game.getBoard().getTile(i, j).getChessboardTileImageView());
             }
