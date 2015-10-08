@@ -88,7 +88,7 @@ public class Bishop extends Piece {
         List<Tile> result = new ArrayList<Tile>();
         int columnIndex = Arrays.asList(board.getColumns()).indexOf(column);
         for(int i = 1; i <= 7; i++) {
-            if(columnIndex + i >= 7  && row - i >= 8) {
+            if(columnIndex + i <= 7  && row - i > 0) {
                 Tile temp = board.getTile(board.getColumns()[columnIndex + i] + (row - i));
                 if (temp.getPiece() == null) {
                     result.add(temp);
