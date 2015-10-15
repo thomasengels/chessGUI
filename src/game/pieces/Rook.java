@@ -11,6 +11,28 @@ import java.util.List;
  * Created by Glenn on 3-10-2015.
  */
 public class Rook extends Piece {
+    private final Short[] RookTable = {
+            0,  0,  0,  0,  0,  0,  0,  0,
+            5, 10, 10, 10, 10, 10, 10,  5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            0,  0,  0,  5,  5,  0,  0,  0
+    };
+
+
+    public int getPieceSquareValue(int x, int y){
+        int index = (x * (y - 1)) + y;
+
+        return RookTable[index];
+    }
+    private int value = 5;
+
+    public int getValue(){
+        return value;
+    }
     @Override
     public List<Tile> getMoves(Board board) {
         List<Tile> result = new ArrayList<Tile>();

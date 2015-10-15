@@ -1,6 +1,7 @@
 package GUI;
 
 import com.sun.org.apache.xpath.internal.SourceTree;
+import game.AI.Evaluation;
 import game.Game;
 import game.board.Tile;
 import game.errors.InvalidMoveException;
@@ -27,8 +28,10 @@ public class SetupBoard{
     private boolean inRepositionState = false;
     private Piece pieceForReposition;
     private Game game;
+    private Evaluation ev;
 
     public void setup(Game game){
+        ev = new Evaluation();
         this.game = game;
         checkboardPane.setPadding(new Insets(1, 1, 1, 1));
         checkboardPane.setVgap(1);
@@ -102,6 +105,7 @@ public class SetupBoard{
                         inRepositionState = true;
                         paintPossibleMoves(pieceForReposition.getMoves(game.getBoard()));
                         checkboardPane.getChildren().remove(e.getSource());
+                        System.out.println("This is the new evaluation value for white: " + ev.getEvaluationValue(game));
                     }
                 });
                 checkboardPane.setConstraints(game.getBoard().getTile(convertXYtoA1(i, j)).getPiece().getChesspieceImageView(), i, j);

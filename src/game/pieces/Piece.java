@@ -18,6 +18,8 @@ public abstract class Piece {
     private Image chesspieceImage;
     private ImageView chesspieceImageView;
 
+    public abstract int getPieceSquareValue(int x, int y);
+    public abstract int getValue();
 
     public Piece(Tile position, String color) {
         this.color = color;
