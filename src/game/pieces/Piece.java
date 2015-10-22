@@ -28,6 +28,9 @@ public abstract class Piece {
 
     public void move(Board board, Tile position) throws InvalidMoveException {
         if (getMoves(board).contains(position) || position.equals(this.position)) {
+            if (position.getPiece() != null) {
+                position.getPiece().setPosition(null);
+            }
             board.getTile(this.position.getLocation()).setPiece(null);
             this.position = position;
             position.setPiece(this);
@@ -38,6 +41,10 @@ public abstract class Piece {
 
     public Image getChesspieceImage() {
         return chesspieceImage;
+    }
+
+    public void setPosition(Tile position) {
+        this.position = position;
     }
 
     public void setChesspieceImage(Image chesspieceImage) {

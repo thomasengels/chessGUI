@@ -1,4 +1,6 @@
 import GUI.SetupBoard;
+import game.AI.AiPlayer;
+import game.AI.Evaluation;
 import game.Game;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,10 @@ public class Main extends Application{
         setup.setup(game);
         primaryStage.setScene(new Scene(setup.getTotalplayboard(), setup.getDimensions()[0], setup.getDimensions()[1]));
         primaryStage.show();
+        Evaluation ev = new Evaluation();
+        AiPlayer aiPlayer = new AiPlayer();
+        aiPlayer.Move(game);
+
     }
     public static void main(String[] args) {
         launch(args);

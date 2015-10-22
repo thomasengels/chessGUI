@@ -1,6 +1,7 @@
 package game.AI;
 
 import game.Game;
+import game.board.Board;
 import game.pieces.Piece;
 
 import java.util.Arrays;
@@ -9,21 +10,21 @@ import java.util.Arrays;
  * Created by Thomas on 13/10/2015.
  */
 public class MaterialValue {
-    public int getMaterialValue(Game game, boolean whiteSide) {
+    public int getMaterialValue(Board board, boolean whiteSide) {
         int value = 0;
         if (whiteSide) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (game.getBoard().getTile(i, j).getPiece().getColor().equals("White")) {
-                        value += game.getBoard().getTile(i, j).getPiece().getValue();
+                    if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")) {
+                        value += board.getTile(i, j).getPiece().getValue();
                     }
                 }
             }
         } else{
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (game.getBoard().getTile(i, j).getPiece().getColor().equals("Black")) {
-                        value += game.getBoard().getTile(i, j).getPiece().getValue();
+                    if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("Black")) {
+                        value += board.getTile(i, j).getPiece().getValue();
                     }
                 }
             }
@@ -32,21 +33,21 @@ public class MaterialValue {
         return value;
     }
 
-    public int getPieceSquareTable(Game game, String piece) {
+    public int getPieceSquareTable(Board board, String piece) {
         int highest = 0;
         int lowest = 0;
         int total = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (game.getBoard().getTile(i, j).getPiece().getClass().getSimpleName().equals(piece)) {
-                    if(highest < game.getBoard().getTile(i,j).getPiece().getPieceSquareValue(i,j)){
-                        highest = game.getBoard().getTile(i,j).getPiece().getPieceSquareValue(i,j);
+                if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getClass().getSimpleName().equals(piece)) {
+                    if(highest < board.getTile(i,j).getPiece().getPieceSquareValue(i,j)){
+                        highest = board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
                     }
-                    else if(lowest > game.getBoard().getTile(i,j).getPiece().getPieceSquareValue(i,j)){
-                        lowest = game.getBoard().getTile(i,j).getPiece().getPieceSquareValue(i,j);
+                    else if(lowest > board.getTile(i,j).getPiece().getPieceSquareValue(i,j)){
+                        lowest = board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
                     }
 
-                    total += game.getBoard().getTile(i,j).getPiece().getPieceSquareValue(i,j);;
+                    total += board.getTile(i,j).getPiece().getPieceSquareValue(i,j);;
                 }
             }
         }
@@ -54,24 +55,25 @@ public class MaterialValue {
         return total;
     }
 
-    public int getMobility(Game game, boolean WhiteSide){
+    public int getMobility(Board board, boolean WhiteSide){
         int nrMoves = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                nrMoves += game.getBoard().getTile(i,j).getPiece().getMoves(game.getBoard()).size();
+                if( board.getTile(i,j).getPiece() != null)
+                nrMoves += board.getTile(i,j).getPiece().getMoves(board).size();
             }
         }
 
         return nrMoves;
     }
 
-    public double kingSafety(Game game){
+    public double kingSafety(Board board){
         double closestValue = 0;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if(calculateEuclidicDistance(game, game.getBoard().getTile(i,j).getPiece()) < closestValue){
-                    closestValue = calculateEuclidicDistance(game, game.getBoard().getTile(i,j).getPiece());
+                if(board.getTile(i,j).getPiece() != null && calculateEuclidicDistance(board, board.getTile(i,j).getPiece()) < closestValue){
+                    closestValue = calculateEuclidicDistance(board, board.getTile(i,j).getPiece());
                 }
             }
         }
@@ -79,14 +81,14 @@ public class MaterialValue {
         return closestValue;
     }
 
-    public double calculateEuclidicDistance(Game game, Piece piece){
+    public double calculateEuclidicDistance(Board board, Piece piece){
         int xofKing = 0;
         int yofKing = 0;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if(game.getBoard().getTile(i,j).getPiece().getClass().getSimpleName().equals("King")){
-                    if(!game.getBoard().getTile(i,j).getPiece().getColor().equals(piece.getColor())){
+                if(board.getTile(i,j).getPiece() != null && board.getTile(i,j).getPiece().getClass().getSimpleName().equals("King")){
+                    if(!board.getTile(i,j).getPiece().getColor().equals(piece.getColor())){
                         xofKing = i;
                         yofKing = j;
                     }

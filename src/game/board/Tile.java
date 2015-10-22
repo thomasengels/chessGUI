@@ -41,6 +41,9 @@ public class Tile{
 
     public int compareColumn( Tile tile) {
         String[] columns = new String[]{"A", "B", "C", "D", "E", "F", "G", "H"};
+        if(tile == null) {
+            return -1;
+        }
         return Arrays.asList(columns).indexOf(location.substring(0, 1)) - Arrays.asList(columns).indexOf(tile.getLocation().substring(0, 1));
     }
 

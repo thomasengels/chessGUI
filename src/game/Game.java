@@ -2,6 +2,7 @@ package game;
 
 import game.board.Board;
 import game.board.Tile;
+import game.errors.InvalidMoveException;
 import game.pieces.*;
 
 import java.util.ArrayList;
@@ -23,12 +24,12 @@ public class Game {
             Tile whitePosition = board.getTile(board.getColumns()[i] + 2);
             Piece wPawn = new Pawn(whitePosition, "White");
             whitePosition.setPiece(wPawn);
-            whitePieces.add(wPawn);
+            board.addPiece(wPawn);
 
             Tile blackPosition = board.getTile(board.getColumns()[i] + 7);
             Piece bPawn = new Pawn(blackPosition, "Black");
             blackPosition.setPiece(bPawn);
-            blackPieces.add(bPawn);
+            board.addPiece(bPawn);
             Tile wTemp = board.getTile(board.getColumns()[i] + 1);
             Tile bTemp = board.getTile(board.getColumns()[i] + 8);
             Piece wPiece = null;
@@ -51,14 +52,26 @@ public class Game {
             }
 
             wTemp.setPiece(wPiece);
-            whitePieces.add(wPawn);
+            board.addPiece(wPiece);
+            board.addPiece(bPiece);
             bTemp.setPiece(bPiece);
-            blackPieces.add(bPiece);
         }
     }
 
 
     public Board getBoard() {
         return board;
+    }
+
+    public boolean move(Piece piece, Tile tile) {
+        Piece temp = tile.getPiece();
+        try {
+            piece.move(board, tile);
+        } catch (InvalidMoveException e) {
+            return false;
+        } finally {
+            board.removePieces();
+        }
+        return true;
     }
 }

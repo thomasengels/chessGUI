@@ -1,13 +1,40 @@
 package game.board;
 
+import game.pieces.Piece;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Created by Glenn on 1-10-2015.
  */
-public class Board {
+public class Board implements Cloneable{
     private Tile[][] tiles;
     private String[] columns;
+    private List<Piece> pieces;
+
+
+    public List<Piece> getPieces() {
+        return pieces;
+    }
+
+    public void addPiece(Piece piece) {
+        pieces.add(piece);
+    }
+
+    public void removePieces() {
+        for (Iterator<Piece> it = pieces.iterator(); it.hasNext();) {
+            Piece temp = it.next();
+            if(temp.getPosition() == null) {
+                System.out.printf("removed %s", temp);
+                it.remove();
+            }
+        }
+    }
 
     public Board() {
+        pieces = new ArrayList<>();
         tiles = new Tile[8][8];
         columns = new String[] {"A", "B", "C", "D", "E", "F", "G", "H"};
         for(int i = 0; i < 8 ; i++) {
