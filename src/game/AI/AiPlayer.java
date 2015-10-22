@@ -10,7 +10,8 @@ public class AiPlayer {
     private MiniMax miniMax;
     public void Move(Game game) {
         miniMax = new MiniMax(game.getBoard(), 3);
-        miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE), 3, true);
+        Node node = miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE), 3, true);
+        System.out.printf("node");
     }
 
     public Node createNodes(Board board, int depth) {

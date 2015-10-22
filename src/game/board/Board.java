@@ -1,7 +1,8 @@
 package game.board;
 
-import game.pieces.Piece;
+import game.pieces.*;
 
+import javax.rmi.CORBA.Tie;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +30,33 @@ public class Board implements Cloneable{
             if(temp.getPosition() == null) {
                 System.out.printf("removed %s", temp);
                 it.remove();
+            }
+        }
+    }
+
+    public Board(Board board) {
+        this();
+        for(Tile[] tileArray : tiles) {
+            for(Tile tile : tileArray) {
+                Piece piece = board.getTile(tile.getLocation()).getPiece();
+                if(piece != null) {
+                    Piece newPiece;
+                    if(piece instanceof Pawn) {
+                       newPiece = new Pawn(tile, piece.getColor());
+                    } else if(piece instanceof Rook) {
+                        newPiece = new Rook(tile, piece.getColor());
+                    } else if( piece instanceof Knight) {
+                        newPiece = new Knight(tile, piece.getColor());
+                    } else if(piece instanceof Bishop) {
+                        newPiece = new Bishop(tile, piece.getColor());
+                    } else if(piece instanceof Queen) {
+                        newPiece = new Queen(tile, piece.getColor());
+                    } else {
+                        newPiece = new King(tile, piece.getColor());
+                    }
+                    tile.setPiece(newPiece);
+                    pieces.add(newPiece);
+                }
             }
         }
     }

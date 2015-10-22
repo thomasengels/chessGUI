@@ -20,7 +20,7 @@ public class Node {
     }
 
     public Node(Board board, int value) {
-        this.board = board;
+        this.board = new Board(board);
         this.value = value;
     }
 
