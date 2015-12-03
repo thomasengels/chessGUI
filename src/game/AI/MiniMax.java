@@ -2,6 +2,7 @@ package game.AI;
 
 import game.Game;
 import game.board.Board;
+import game.board.Move;
 import game.board.Tile;
 import game.errors.InvalidMoveException;
 import game.pieces.Piece;
@@ -16,8 +17,8 @@ public class MiniMax {
     private Evaluation ev = new Evaluation();
     private Node node;
 
-    public MiniMax(Board board, int depth) {
-        this.node = new Node(board, depth);
+    public MiniMax(Board board, int depth, List<Move> moves) {
+        this.node = new Node(board, depth, moves);
     }
 
     public MiniMax(Node node) {
@@ -30,7 +31,7 @@ public class MiniMax {
             return state;
         }
         if (max){
-            Node bestValue = new Node(state.getBoard(), Integer.MIN_VALUE);
+            Node bestValue = new Node(state.getBoard(), Integer.MIN_VALUE, state.getMoves());
             Board board = bestValue.getBoard();
             for(Piece piece: board.getPieces()) {
                 if(piece.getColor().equals("Black")) {
@@ -40,6 +41,7 @@ public class MiniMax {
                         Piece tempPiece = temp.getBoard().getTile(piece.getPosition().getLocation()).getPiece();
                         try {
                             tempPiece.move(temp.getBoard(), tempTile);
+                            temp.addMove(new Move(tempTile, tempPiece));
                         } catch (InvalidMoveException e) {
                             e.printStackTrace();
                         }
@@ -50,7 +52,7 @@ public class MiniMax {
             }
             return bestValue;
         }else {
-            Node bestValue = new Node(state.getBoard(), Integer.MAX_VALUE);
+            Node bestValue = new Node(state.getBoard(), Integer.MAX_VALUE, state.getMoves());
             Board board = bestValue.getBoard();
             for(Piece piece: board.getPieces()) {
                 if (piece.getColor().equals("White")) {
@@ -60,6 +62,7 @@ public class MiniMax {
                         Piece tempPiece = temp.getBoard().getTile(piece.getPosition().getLocation()).getPiece();
                         try {
                             tempPiece.move(temp.getBoard(), tempTile);
+                            temp.addMove(new Move(tempTile, tempPiece));
                         } catch (InvalidMoveException e) {
                             e.printStackTrace();
                         }
