@@ -116,4 +116,20 @@ public class Board implements Cloneable{
         }
         return result;
     }
+
+    public String getMove(Board board) {
+        String from = "";
+        String to = "";
+        for(Tile[] tileArray : tiles) {
+            for(Tile tile : tileArray) {
+                Tile tempTile = board.getTile(tile.getLocation());
+                if((tile.getPiece() == null && tempTile.getPiece() != null) || (tile.getPiece() != null && tempTile.getPiece() != null && !tempTile.getPiece().getColor().equals(tile.getPiece().getColor()))) {
+                    to = tempTile.getLocation();
+                } else if(tile.getPiece() != null && tempTile.getPiece() == null) {
+                    from = tile.getLocation();
+                }
+            }
+        }
+        return from + "," + to;
+    }
 }

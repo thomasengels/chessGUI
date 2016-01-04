@@ -6,6 +6,7 @@ import game.board.Tile;
 import game.errors.InvalidMoveException;
 import game.pieces.Piece;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,23 +19,17 @@ public class Node {
     private List<Move> moves;
 
     public Node(Node node) {
-        this(node.board, node.value, node.getMoves());
-        node.getMoves().addAll(moves);
+        this(node.board, node.value);
+        moves = node.getMoves();
     }
 
-    public List<Move> getMoves() {
-        return moves;
-    }
 
-    public Node(Board board, int value, List<Move> moves) {
+    public Node(Board board, int value) {
         this.board = new Board(board);
         this.value = value;
-        this.moves = moves;
+        moves = new ArrayList<>();
     }
 
-    public void addMove(Move move) {
-        moves.add(move);
-    }
 
     public void setValue(int value) {
         this.value = value;
@@ -46,5 +41,22 @@ public class Node {
 
     public Board getBoard() {
         return board;
+    }
+
+    public List<Move> getMoves() {
+        return moves;
+    }
+
+    public void addMove(int index, Move move) {
+        try{
+            moves.set(index - 1, move);
+        } catch (Exception e) {
+            moves.add(index - 1, move);
+        }
+    }
+
+    public String getBestMove() {
+        Move move = moves.get(0);
+        return move.getOldLocation() + "," + move.getLocation().getLocation();
     }
 }

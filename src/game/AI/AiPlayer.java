@@ -13,9 +13,10 @@ import java.util.Date;
 public class AiPlayer {
     private MiniMax miniMax;
     public void Move(Game game) {
-        miniMax = new MiniMax(game.getBoard(), 4, game.getMoves());
+        miniMax = new MiniMax(game.getBoard(), 4);
         System.out.println(new Date());
-        Node node = miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE, new ArrayList<Move>()), 3, true);
+        Node node = miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE), 3, true);
+        game.move(node.getBestMove());
         System.out.println(new Date());
     }
 }

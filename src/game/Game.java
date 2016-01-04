@@ -77,4 +77,16 @@ public class Game {
         }
         return true;
     }
+
+    public boolean move(String move) {
+        String[] locations = move.split(",");
+        try{
+            board.getTile(locations[0]).getPiece().move(board, board.getTile(locations[1]));
+        } catch (InvalidMoveException e) {
+            return false;
+        } finally {
+            board.removePieces();
+        }
+        return true;
+    }
 }

@@ -17,8 +17,8 @@ public class MiniMax {
     private Evaluation ev = new Evaluation();
     private Node node;
 
-    public MiniMax(Board board, int depth, List<Move> moves) {
-        this.node = new Node(board, depth, moves);
+    public MiniMax(Board board, int depth) {
+        this.node = new Node(board, depth);
     }
 
     public MiniMax(Node node) {
@@ -31,7 +31,7 @@ public class MiniMax {
             return state;
         }
         if (max){
-            Node bestValue = new Node(state.getBoard(), Integer.MIN_VALUE, state.getMoves());
+            Node bestValue = new Node(state.getBoard(), Integer.MIN_VALUE);
             Board board = bestValue.getBoard();
             for(Piece piece: board.getPieces()) {
                 if(piece.getColor().equals("Black")) {
@@ -39,20 +39,28 @@ public class MiniMax {
                         Node temp = new Node(state);
                         Tile tempTile = temp.getBoard().getTile(tile.getLocation());
                         Piece tempPiece = temp.getBoard().getTile(piece.getPosition().getLocation()).getPiece();
+                        Move move = null;
+                        String oldLocation = tempPiece.getPosition().getLocation();
                         try {
                             tempPiece.move(temp.getBoard(), tempTile);
-                            temp.addMove(new Move(tempTile, tempPiece));
+                            move = new Move(tempTile, tempPiece);
+                            move.setOldLocation(oldLocation);
+
                         } catch (InvalidMoveException e) {
                             e.printStackTrace();
                         }
                         Node node = calculate(temp, depth - 1, false);
-                        bestValue = bestValue.getValue() < node.getValue() ? node : bestValue;
+                        if(bestValue.getValue() < node.getValue()) {
+                            bestValue = node;
+                            bestValue.addMove(depth, move);
+                        }
+                        //bestValue = bestValue.getValue() < node.getValue() ? node : bestValue;
                     }
                 }
             }
             return bestValue;
         }else {
-            Node bestValue = new Node(state.getBoard(), Integer.MAX_VALUE, state.getMoves());
+            Node bestValue = new Node(state.getBoard(), Integer.MAX_VALUE);
             Board board = bestValue.getBoard();
             for(Piece piece: board.getPieces()) {
                 if (piece.getColor().equals("White")) {
@@ -60,13 +68,18 @@ public class MiniMax {
                         Node temp = new Node(state);
                         Tile tempTile = temp.getBoard().getTile(tile.getLocation());
                         Piece tempPiece = temp.getBoard().getTile(piece.getPosition().getLocation()).getPiece();
+                        Move move = null;
                         try {
                             tempPiece.move(temp.getBoard(), tempTile);
-                            temp.addMove(new Move(tempTile, tempPiece));
+                            move = new Move(tempTile, tempPiece);
                         } catch (InvalidMoveException e) {
                             e.printStackTrace();
                         }
                         Node node = calculate(temp, depth - 1, true);
+                        if(bestValue.getValue() > node.getValue()) {
+                            bestValue = node;
+                            bestValue.addMove(depth, move);
+                        }
                         bestValue = bestValue.getValue() > node.getValue() ? node : bestValue;
                     }
                 }
