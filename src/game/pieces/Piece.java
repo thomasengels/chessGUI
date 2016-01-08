@@ -8,11 +8,12 @@ import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by Glenn on 1-10-2015.
  */
-public abstract class Piece {
+public abstract class Piece{
     protected Tile position;
     protected String color;
     private Image chesspieceImage;
@@ -26,17 +27,21 @@ public abstract class Piece {
         this.position = position;
     }
 
-    public void move(Board board, Tile position) throws InvalidMoveException {
+    public Board move(Board board, Tile position) throws InvalidMoveException {
         if (getMoves(board).contains(position) || position.equals(this.position)) {
+            //board.setLastMove(position, this);
             if (position.getPiece() != null) {
                 position.getPiece().setPosition(null);
             }
             board.getTile(this.position.getLocation()).setPiece(null);
             this.position = position;
             position.setPiece(this);
+            board.getTile(this.position.getLocation()).setPiece(this);
         } else {
             throw new InvalidMoveException("This piece can't move there.");
         }
+
+        return board;
     }
 
     public Image getChesspieceImage() {

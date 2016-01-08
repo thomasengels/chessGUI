@@ -14,6 +14,7 @@ public class Board implements Cloneable{
     private Tile[][] tiles;
     private String[] columns;
     private List<Piece> pieces;
+    private Move lastMove;
 
 
     public List<Piece> getPieces() {
@@ -131,5 +132,13 @@ public class Board implements Cloneable{
             }
         }
         return from + "," + to;
+    }
+
+    public Move getLastMove() {
+        return lastMove;
+    }
+
+    public void setLastMove(Tile location, Piece piece) {
+        this.lastMove = new Move(location, piece);
     }
 }

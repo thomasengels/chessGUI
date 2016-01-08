@@ -1,5 +1,7 @@
 package game;
 
+import game.AI.AiPlayer;
+import game.AI.Evaluation;
 import game.board.Board;
 import game.board.Move;
 import game.board.Tile;
@@ -8,15 +10,32 @@ import game.pieces.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by Glenn on 6-10-2015.
  */
-public class Game {
+public class Game extends Observable {
     private Board board;
     private List<Move> moves;
 
+    public boolean isWhitesTurn() {
+        return whitesTurn;
+    }
+
+    private boolean whitesTurn;
+    private Evaluation ev;
+    private AiPlayer aiPlayer;
+
+    public void triggerAiPlayer(){
+        aiPlayer.MoveForReal(this);
+    }
+
     public Game() {
+        ev = new Evaluation();
+        aiPlayer = new AiPlayer();
+
+        whitesTurn = true;
         board = new Board();
         moves = new ArrayList<>();
         for(int i = 0; i < 8; i++) {
@@ -66,27 +85,44 @@ public class Game {
         return moves;
     }
 
-    public boolean move(Move move) {
+    public void move(Move move) {
         try {
-            move.getPiece().move(board, move.getLocation());
+            board = move.getPiece().move(board, move.getLocation());
             moves.add(move);
         } catch (InvalidMoveException e) {
-            return false;
+            e.printStackTrace();
         } finally {
             board.removePieces();
         }
-        return true;
+        /*
+
+        setChanged();
+        notifyObservers(this);
+        */
+
     }
 
-    public boolean move(String move) {
+    public void move(String move) {
+        System.out.println(move);
         String[] locations = move.split(",");
         try{
-            board.getTile(locations[0]).getPiece().move(board, board.getTile(locations[1]));
+            board = board.getTile(locations[0]).getPiece().move(board, board.getTile(locations[1]));
         } catch (InvalidMoveException e) {
-            return false;
+            e.printStackTrace();
         } finally {
             board.removePieces();
         }
-        return true;
+        /*
+        setChanged();
+        notifyObservers(this);
+        */
+    }
+
+    public void switchTurns(){
+        whitesTurn = !whitesTurn;
+
+        if(!whitesTurn){
+            aiPlayer.Move(this);
+        }
     }
 }
