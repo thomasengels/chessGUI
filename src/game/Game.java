@@ -27,10 +27,6 @@ public class Game extends Observable {
     private Evaluation ev;
     private AiPlayer aiPlayer;
 
-    public void triggerAiPlayer(){
-        aiPlayer.MoveForReal(this);
-    }
-
     public Game() {
         ev = new Evaluation();
         aiPlayer = new AiPlayer();
@@ -94,11 +90,11 @@ public class Game extends Observable {
         } finally {
             board.removePieces();
         }
-        /*
+
 
         setChanged();
         notifyObservers(this);
-        */
+
 
     }
 
@@ -112,10 +108,10 @@ public class Game extends Observable {
         } finally {
             board.removePieces();
         }
-        /*
+
         setChanged();
         notifyObservers(this);
-        */
+
     }
 
     public void switchTurns(){

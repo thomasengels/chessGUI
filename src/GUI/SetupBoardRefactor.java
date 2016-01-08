@@ -9,10 +9,13 @@ import game.board.Tile;
 import game.errors.InvalidMoveException;
 import game.pieces.*;
 import javafx.concurrent.Task;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -23,6 +26,8 @@ import java.util.concurrent.ExecutionException;
 public class SetupBoardRefactor implements Observer{
     private BorderPane totalplayboard = new BorderPane();
     private GridPane checkboardPane = new GridPane();
+    private VBox changePlayer = new VBox();
+    private Button changeplayer;
     private VBox lostPieces = new VBox();
     private boolean inRepositionState = false;
     private Piece pieceForReposition;
@@ -41,6 +46,20 @@ public class SetupBoardRefactor implements Observer{
         checkboardPane.autosize();
         totalplayboard.setCenter(checkboardPane);
         totalplayboard.setLeft(lostPieces);
+        changeplayer = new Button();
+        changeplayer.setText("Verander van Speler");
+        addEventToButton();
+        changePlayer.getChildren().add(changeplayer);
+        totalplayboard.setRight(changePlayer);
+    }
+
+    public void addEventToButton(){
+        changeplayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                game.switchTurns();
+            }
+        });
     }
 
     public void placePieces(){
@@ -140,38 +159,46 @@ public class SetupBoardRefactor implements Observer{
                 game.getBoard().getTile(i,j).getChessboardTileImageView().setFitWidth(45);
                 game.getBoard().getTile(i,j).getChessboardTileImageView().autosize();
                 game.getBoard().getTile(i, j).getChessboardTileImageView().setOnMouseClicked(e -> {
-                    Task updateUI = new Task() {
-                        @Override
-                        protected Object call() throws Exception {
-                            Move move = null;
-                            if (inRepositionState) {
-                                repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
+                    if (inRepositionState) {
+
+                        repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                             /*
                               if lostpieces vbox is visible, the extra width of screen has to be taken in account  (int) (e.getSceneX() / 45) - 1
                              */
-                                if(lostPieces.getWidth() > 0) {
-                                    move = new Move(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)), pieceForReposition);
-                                }
-                                else {
-                                    move = new Move(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)), pieceForReposition);
-                                }
+                        if (lostPieces.getWidth() > 0) {
+                            if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)))) {
+                                takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)).getPiece());
                             }
-                            inRepositionState = false;
-
-                            return move;
+                            repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
+                            Move move = new Move(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)), pieceForReposition);
+                            game.move(move);
+                            //game.move(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)));
+                            //pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)));
+                            checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) (e.getSceneX()) / 45) - 1, ((int) e.getSceneY()) / 45);
+                        } else {
+                            if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
+                                takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece());
+                            }
+                            repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
+                            Move move = new Move(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)), pieceForReposition);
+                            game.move(move);
+                            //game.move(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)));
+                            // pieceForReposition.move(game.getBoard(), game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)));
+                            checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
                         }
-                    };
 
-                    new Thread(updateUI).run();
-                    try {
-                        game.move((Move) updateUI.get());
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    } catch (ExecutionException e1) {
-                        e1.printStackTrace();
+
+                        System.out.println(((int) e.getY()) / 8 + " " + ((int) e.getX()) / 8);
+
+                        checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
+                        inRepositionState = false;
+
+                        System.out.println(game.getBoard().toString());
+
+
                     }
-
                 });
+
 
                 checkboardPane.setConstraints(game.getBoard().getTile(i, j).getChessboardTileImageView(), i, j);
 
@@ -217,51 +244,48 @@ public class SetupBoardRefactor implements Observer{
     }
 
     public boolean checkIfTileOccupid(Tile tile){
-        if(game.getBoard().getTile(tile.getLocation()).getPiece() != null){
+        if(tile.getPiece() != null){
             return true;
         }
         return false;
     }
 
-    public void takePieceFromBoard(Tile tile){
-        lostPieces.getChildren().add(game.getBoard().getTile(tile.getLocation()).getPiece().getChesspieceImageView());
-        checkboardPane.getChildren().remove(game.getBoard().getTile(tile.getLocation()).getPiece().getChesspieceImageView());
+    public void takePieceFromBoard(Piece piece){
+        lostPieces.getChildren().add(piece.getChesspieceImageView());
+        checkboardPane.getChildren().remove(piece.getChesspieceImageView());
     }
+
 
     @Override
     public void update(Observable o, Object arg) {
-        Task updateUI = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                if (!((Game) arg).isWhitesTurn()) {
+        if (!((Game) arg).isWhitesTurn()) {
 
-                    if (checkIfTileOccupid(((Game) arg).getBoard().getLastMove().getLocation())) {
-                        takePieceFromBoard(((Game) arg).getBoard().getLastMove().getLocation());
-                    }
-                    checkboardPane.setConstraints(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView(), convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[0], convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[1]);
-
-
-                    checkboardPane.getChildren().addAll(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView());
-
-                    System.out.println("AI is done");
-                } else {
-                    if (checkIfTileOccupid(((Game) arg).getBoard().getLastMove().getLocation())) {
-                        takePieceFromBoard(((Game) arg).getBoard().getLastMove().getLocation());
-                    }
-
-                    checkboardPane.setConstraints(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView(), convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[0], convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[1]);
-
-
-                    checkboardPane.getChildren().addAll(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView());
-                }
-                return null;
+            if (checkIfTileOccupid(((Game) arg).getBoard().getLastMove().getLocation())) {
+                takePieceFromBoard(((Game) arg).getBoard().getLastMove().getLocation().getPiece());
             }
-        };
+            checkboardPane.setConstraints(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView(), convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[0], convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[1]);
 
 
+            checkboardPane.getChildren().addAll(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView());
 
-        game = (Game) o;
-        game.switchTurns();
+            System.out.println("AI is done");
 
+            game.switchTurns();
+
+            //changeplayer.fireEvent((Event) changeplayer.getOnMouseClicked());
+        }
+        /*else {
+            if (checkIfTileOccupid(((Game) arg).getBoard().getLastMove().getLocation())) {
+                takePieceFromBoard(((Game) arg).getBoard().getLastMove().getLocation().getPiece());
+            }
+
+            checkboardPane.setConstraints(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView(), convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[0], convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[1]);
+
+
+            checkboardPane.getChildren().addAll(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView());
+        }   */
+
+        this.game = (Game) arg;
     }
+
 }

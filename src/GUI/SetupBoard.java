@@ -9,6 +9,7 @@ import game.errors.InvalidMoveException;
 import game.pieces.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -26,6 +27,7 @@ public class SetupBoard{
     private BorderPane totalplayboard = new BorderPane();
     private GridPane checkboardPane = new GridPane();
     private VBox lostPieces = new VBox();
+    private VBox changePlayer = new VBox();
     private boolean inRepositionState = false;
     private Piece pieceForReposition;
     private Game game;
@@ -43,6 +45,10 @@ public class SetupBoard{
         checkboardPane.autosize();
         totalplayboard.setCenter(checkboardPane);
         totalplayboard.setLeft(lostPieces);
+        Button changeplayer = new Button();
+        changeplayer.setText("Verander van Speler");
+        changePlayer.getChildren().add(changeplayer);
+        totalplayboard.setRight(changePlayer);
     }
 
     public void placePieces(){
