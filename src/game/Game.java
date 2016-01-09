@@ -27,6 +27,10 @@ public class Game extends Observable {
     private Evaluation ev;
     private AiPlayer aiPlayer;
 
+    public AiPlayer getAiPlayer(){
+        return this.aiPlayer;
+    }
+
     public Game() {
         ev = new Evaluation();
         aiPlayer = new AiPlayer();
@@ -91,9 +95,10 @@ public class Game extends Observable {
             board.removePieces();
         }
 
-
+         /*
         setChanged();
         notifyObservers(this);
+        */
 
 
     }
@@ -108,9 +113,10 @@ public class Game extends Observable {
         } finally {
             board.removePieces();
         }
-
+          /*
         setChanged();
         notifyObservers(this);
+        */
 
     }
 

@@ -1,27 +1,23 @@
 package GUI;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
+import game.AI.AiPlayer;
 import game.AI.Evaluation;
 import game.Game;
-import game.board.Board;
 import game.board.Move;
 import game.board.Tile;
-import game.errors.InvalidMoveException;
-import game.pieces.*;
-import javafx.concurrent.Task;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import game.pieces.Piece;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 public class SetupBoardRefactor implements Observer{
     private BorderPane totalplayboard = new BorderPane();
@@ -54,11 +50,8 @@ public class SetupBoardRefactor implements Observer{
     }
 
     public void addEventToButton(){
-        changeplayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                game.switchTurns();
-            }
+        changeplayer.setOnMouseClicked(e ->{
+            game.switchTurns();
         });
     }
 
@@ -195,6 +188,8 @@ public class SetupBoardRefactor implements Observer{
 
                         System.out.println(game.getBoard().toString());
 
+                        pieceForReposition = null;
+
 
                     }
                 });
@@ -258,34 +253,19 @@ public class SetupBoardRefactor implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        if (!((Game) arg).isWhitesTurn()) {
 
-            if (checkIfTileOccupid(((Game) arg).getBoard().getLastMove().getLocation())) {
-                takePieceFromBoard(((Game) arg).getBoard().getLastMove().getLocation().getPiece());
+        if (!game.isWhitesTurn()) {
+
+            if (checkIfTileOccupid(((AiPlayer) arg).getMove(game).getLocation())) {
+                takePieceFromBoard(((AiPlayer) arg).getMove(game).getLocation().getPiece());
             }
-            checkboardPane.setConstraints(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView(), convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[0], convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[1]);
 
-
-            checkboardPane.getChildren().addAll(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView());
+            checkboardPane.setConstraints(((AiPlayer) arg).getMove(game).getPiece().getChesspieceImageView(), convertA1toXY(((AiPlayer) arg).getMove(game).getLocation().getLocation())[0], convertA1toXY(((AiPlayer) arg).getMove(game).getLocation().getLocation())[1]);
 
             System.out.println("AI is done");
 
             game.switchTurns();
-
-            //changeplayer.fireEvent((Event) changeplayer.getOnMouseClicked());
         }
-        /*else {
-            if (checkIfTileOccupid(((Game) arg).getBoard().getLastMove().getLocation())) {
-                takePieceFromBoard(((Game) arg).getBoard().getLastMove().getLocation().getPiece());
-            }
-
-            checkboardPane.setConstraints(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView(), convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[0], convertA1toXY(((Game) arg).getBoard().getLastMove().getLocation().getLocation())[1]);
-
-
-            checkboardPane.getChildren().addAll(((Game) arg).getBoard().getLastMove().getPiece().getChesspieceImageView());
-        }   */
-
-        this.game = (Game) arg;
     }
 
 }

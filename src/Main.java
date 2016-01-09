@@ -13,7 +13,7 @@ public class Main extends Application{
         primaryStage.setTitle("Hello World");
         SetupBoardRefactor setup = new SetupBoardRefactor();
         Game game = new Game();
-        game.addObserver(setup);
+        game.getAiPlayer().addObserver(setup);
         setup.setup(game);
         primaryStage.setScene(new Scene(setup.getTotalplayboard(), setup.getDimensions()[0], setup.getDimensions()[1]));
         primaryStage.show();

@@ -18,6 +18,7 @@ public abstract class Piece{
     protected String color;
     private Image chesspieceImage;
     private ImageView chesspieceImageView;
+    protected String previousPosition;
 
     public abstract int getPieceSquareValue(int x, int y);
     public abstract int getValue();
@@ -25,6 +26,11 @@ public abstract class Piece{
     public Piece(Tile position, String color) {
         this.color = color;
         this.position = position;
+        this.previousPosition = position.getLocation();
+    }
+
+    public String getPreviousPosition(){
+        return this.previousPosition;
     }
 
     public Board move(Board board, Tile position) throws InvalidMoveException {
@@ -33,6 +39,7 @@ public abstract class Piece{
             if (position.getPiece() != null) {
                 position.getPiece().setPosition(null);
             }
+            this.previousPosition = this.position.getLocation();
             board.getTile(this.position.getLocation()).setPiece(null);
             this.position = position;
             position.setPiece(this);

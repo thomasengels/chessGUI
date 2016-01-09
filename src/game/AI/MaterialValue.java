@@ -24,7 +24,7 @@ public class MaterialValue {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("Black")) {
-                        value += board.getTile(i, j).getPiece().getValue();
+                        value -= board.getTile(i, j).getPiece().getValue();
                     }
                 }
             }
@@ -47,7 +47,14 @@ public class MaterialValue {
                         lowest = board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
                     }
 
-                    total += board.getTile(i,j).getPiece().getPieceSquareValue(i,j);;
+                    if(board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")){
+                        total += board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
+                    }
+                    else{
+                        total -= board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
+                    }
+
+
                 }
             }
         }
@@ -59,8 +66,14 @@ public class MaterialValue {
         int nrMoves = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if( board.getTile(i,j).getPiece() != null)
-                nrMoves += board.getTile(i,j).getPiece().getMoves(board).size();
+                if( board.getTile(i,j).getPiece() != null) {
+                    if(board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")){
+                        nrMoves += board.getTile(i,j).getPiece().getMoves(board).size();
+                    }
+                    else{
+                        nrMoves -= board.getTile(i,j).getPiece().getMoves(board).size();
+                    }
+                }
             }
         }
 

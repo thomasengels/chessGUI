@@ -10,10 +10,21 @@ public class Move {
     private Piece piece;
     private String oldLocation;
 
+    public static Move newInstance(Move previousMove){
+        return new Move(previousMove.getLocation(),previousMove.getPiece());
+    }
+
     public Move(Tile location, Piece piece) {
         this.location = location;
         this.piece = piece;
-        oldLocation = piece.getPosition().getLocation();
+        try{
+            this.oldLocation = piece.getPreviousPosition();
+        }catch (NullPointerException ex){
+            System.out.print(this.toString());
+        }
+
+
+        //System.out.println(this.oldLocation);
     }
 
     public Tile getLocation() {

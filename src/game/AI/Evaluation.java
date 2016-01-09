@@ -13,9 +13,9 @@ public class Evaluation {
         Board game = node.getBoard();
         value += mv.getMaterialValue(game, false);
 
-        value += mv.getMobility(game, false);
+        //value += mv.getMobility(game, false);
 
-        value += mv.getPieceSquareTable(game, "Pawn");
+        //value += mv.getPieceSquareTable(game, "Pawn");
 
         return value;
     }

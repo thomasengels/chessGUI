@@ -139,6 +139,6 @@ public class Board implements Cloneable{
     }
 
     public void setLastMove(Tile location, Piece piece) {
-        this.lastMove = new Move(location, piece);
+        this.lastMove = Move.newInstance(new Move(location, piece));
     }
 }
