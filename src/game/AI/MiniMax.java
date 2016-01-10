@@ -69,9 +69,11 @@ public class MiniMax {
                         Tile tempTile = temp.getBoard().getTile(tile.getLocation());
                         Piece tempPiece = temp.getBoard().getTile(piece.getPosition().getLocation()).getPiece();
                         Move move = null;
+                        String oldLocation = tempPiece.getPosition().getLocation();
                         try {
                             tempPiece.move(temp.getBoard(), tempTile);
                             move = new Move(tempTile, tempPiece);
+                            move.setOldLocation(oldLocation);
                         } catch (InvalidMoveException e) {
                             e.printStackTrace();
                         }
@@ -80,12 +82,79 @@ public class MiniMax {
                             bestValue = node;
                             bestValue.addMove(depth, move);
                         }
-                        bestValue = bestValue.getValue() > node.getValue() ? node : bestValue;
+                        //bestValue = bestValue.getValue() > node.getValue() ? node : bestValue;
                     }
                 }
             }
             return bestValue;
         }
+    }
+
+    public Node alphaBetaMax(Node state, int alpha, int beta, int depth) {
+        if (depth == 0) {
+            state.setValue(ev.getEvaluationValue(state));
+            return state;
+        }
+        Node bestValue = new Node(state.getBoard(), alpha);
+        Board board = bestValue.getBoard();
+        for(Piece piece: board.getPieces()) {
+            if(piece.getColor().equals("Black")) {
+                for (Tile tile : piece.getMoves(board)) {
+                    Node temp = new Node(state);
+                    Tile tempTile = temp.getBoard().getTile(tile.getLocation());
+                    Piece tempPiece = temp.getBoard().getTile(piece.getPosition().getLocation()).getPiece();
+                    Move move = null;
+                    String oldLocation = tempPiece.getPosition().getLocation();
+                    try {
+                        tempPiece.move(temp.getBoard(), tempTile);
+                        move = new Move(tempTile, tempPiece);
+                        move.setOldLocation(oldLocation);
+
+                    } catch (InvalidMoveException e) {
+                        e.printStackTrace();
+                    }
+                    Node node = alphaBetaMin(temp, alpha, beta, depth - 1);
+                    if(node.getValue() >= beta) {
+                        return node;
+                    }
+
+                    //bestValue = bestValue.getValue() < node.getValue() ? node : bestValue;
+                }
+            }
+        }
+        return bestValue;
+    }
+
+    private Node alphaBetaMin(Node state, int alpha, int beta, int depth) {
+        if (depth == 0) {
+            state.setValue(ev.getEvaluationValue(state));
+            return state;
+        }
+        Node bestValue = new Node(state.getBoard(), Integer.MAX_VALUE);
+        Board board = bestValue.getBoard();
+        for(Piece piece: board.getPieces()) {
+            if (piece.getColor().equals("White")) {
+                for (Tile tile : piece.getMoves(state.getBoard())) {
+                    Node temp = new Node(state);
+                    Tile tempTile = temp.getBoard().getTile(tile.getLocation());
+                    Piece tempPiece = temp.getBoard().getTile(piece.getPosition().getLocation()).getPiece();
+                    Move move = null;
+                    try {
+                        tempPiece.move(temp.getBoard(), tempTile);
+                        move = new Move(tempTile, tempPiece);
+                    } catch (InvalidMoveException e) {
+                        e.printStackTrace();
+                    }
+                    Node node = calculate(temp, depth - 1, true);
+                    if(bestValue.getValue() > node.getValue()) {
+                        bestValue = node;
+                        bestValue.addMove(depth, move);
+                    }
+                    bestValue = bestValue.getValue() > node.getValue() ? node : bestValue;
+                }
+            }
+        }
+        return bestValue;
     }
 }
 
