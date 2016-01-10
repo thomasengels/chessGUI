@@ -56,7 +56,7 @@ public class Node {
     }
 
     public String getBestMove() {
-        Move move = moves.get(0);
+        Move move = moves.get(moves.size()-1);
         return move.getOldLocation() + "," + move.getLocation().getLocation();
     }
 }
