@@ -11,11 +11,11 @@ public class Evaluation {
         MaterialValue mv = new MaterialValue();
         int value = 0;
         Board game = node.getBoard();
-        value += mv.getMaterialValue(game, false);
+        value += mv.getMaterialValue(game);
 
-        //value += mv.getMobility(game, false);
+        value += mv.getMobility(game);
 
-        //value += mv.getPieceSquareTable(game, "Pawn");
+        value += mv.getPieceSquareTable(game);
 
         return value;
     }

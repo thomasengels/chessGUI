@@ -10,22 +10,19 @@ import java.util.Arrays;
  * Created by Thomas on 13/10/2015.
  */
 public class MaterialValue {
-    public int getMaterialValue(Board board, boolean whiteSide) {
+    public int getMaterialValue(Board board) {
         int value = 0;
-        if (whiteSide) {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")) {
-                        value += board.getTile(i, j).getPiece().getValue();
-                    }
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")) {
+                    value += board.getTile(i, j).getPiece().getValue();
                 }
             }
-        } else{
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("Black")) {
-                        value -= board.getTile(i, j).getPiece().getValue();
-                    }
+        }
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("Black")) {
+                    value -= board.getTile(i, j).getPiece().getValue();
                 }
             }
         }
@@ -33,12 +30,13 @@ public class MaterialValue {
         return value;
     }
 
-    public int getPieceSquareTable(Board board, String piece) {
+    public int getPieceSquareTable(Board board) {
         int highest = 0;
         int lowest = 0;
         int total = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
+                /*
                 if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getClass().getSimpleName().equals(piece)) {
                     if(highest < board.getTile(i,j).getPiece().getPieceSquareValue(i,j)){
                         highest = board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
@@ -46,28 +44,29 @@ public class MaterialValue {
                     else if(lowest > board.getTile(i,j).getPiece().getPieceSquareValue(i,j)){
                         lowest = board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
                     }
+                    */
+                     if(board.getTile(i,j).getPiece() != null) {
+                         if (board.getTile(i, j).getPiece().getColor().equals("White")){
+                             total += board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
+                         }
+                         else{
+                             total -= board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
+                         }
+                }
 
-                    if(board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")){
-                        total += board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
-                    }
-                    else{
-                        total -= board.getTile(i,j).getPiece().getPieceSquareValue(i,j);
-                    }
 
 
                 }
             }
-        }
-
         return total;
     }
 
-    public int getMobility(Board board, boolean WhiteSide){
+    public int getMobility(Board board){
         int nrMoves = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if( board.getTile(i,j).getPiece() != null) {
-                    if(board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")){
+                    if(board.getTile(i, j).getPiece().getColor().equals("White")){
                         nrMoves += board.getTile(i,j).getPiece().getMoves(board).size();
                     }
                     else{

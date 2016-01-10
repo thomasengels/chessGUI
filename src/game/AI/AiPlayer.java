@@ -14,7 +14,7 @@ public class AiPlayer extends Observable {
     private String move;
     public void Move(Game game) {
         System.out.println("Ai has started");
-        miniMax = new MiniMax(game.getBoard(), 3);
+        miniMax = new MiniMax(game.getBoard(), 4);
         System.out.println(new Date());
         Node node = miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE), 3, true);
         String[] locations = node.getBestMove().split(",");
