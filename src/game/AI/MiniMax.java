@@ -16,6 +16,11 @@ import java.util.List;
 public class MiniMax {
     private Evaluation ev = new Evaluation();
     private Node node;
+    private int counter = 0;
+
+    public int getCounter() {
+        return counter;
+    }
 
     public MiniMax(Board board, int depth) {
         this.node = new Node(board, depth);
@@ -26,6 +31,7 @@ public class MiniMax {
     }
 
     public Node calculate(Node state, int depth, boolean max) {
+        counter++;
         if(depth == 0) {
             state.setValue(ev.getEvaluationValue(state));
             return state;

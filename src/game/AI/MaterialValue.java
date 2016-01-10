@@ -33,12 +33,15 @@ public class MaterialValue {
                 Piece piece = board.getTile(i, j).getPiece();
                 if (piece != null) {
                     if (piece.getColor().equals("White")) {
-                        value += piece.getValue();
-                    } else {
                         value -= piece.getValue();
+                    } else {
+                        value += piece.getValue();
                     }
                 }
             }
+        }
+        if(value != 0) {
+            return value;
         }
         return value;
     }

@@ -27,6 +27,7 @@ public class AiPlayer extends Observable {
 
 
         game.move(move);
+        System.out.printf("%d", miniMax.getCounter());
     }
 
     public Move getMove(Game game){

@@ -13,7 +13,7 @@ public class Evaluation {
         Board game = node.getBoard();
         value += mv.getMaterialValue(game);
 
-        value += mv.getMobility(game);
+        //value += mv.getMobility(game);
 
         //value += mv.getPieceSquareTable(game);
 
