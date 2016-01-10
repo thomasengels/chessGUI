@@ -15,7 +15,7 @@ public class Evaluation {
 
         value += mv.getMobility(game);
 
-        value += mv.getPieceSquareTable(game);
+        //value += mv.getPieceSquareTable(game);
 
         return value;
     }

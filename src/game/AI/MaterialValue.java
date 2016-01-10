@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public class MaterialValue {
     public int getMaterialValue(Board board) {
-        int value = 0;
+        /*int value = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (board.getTile(i,j).getPiece() != null && board.getTile(i, j).getPiece().getColor().equals("White")) {
@@ -26,7 +26,20 @@ public class MaterialValue {
                 }
             }
         }
-
+*/
+        int value = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = board.getTile(i, j).getPiece();
+                if (piece != null) {
+                    if (piece.getColor().equals("White")) {
+                        value += piece.getValue();
+                    } else {
+                        value -= piece.getValue();
+                    }
+                }
+            }
+        }
         return value;
     }
 
