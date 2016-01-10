@@ -15,7 +15,7 @@ public class AiPlayer {
     public void Move(Game game) {
         miniMax = new MiniMax(game.getBoard(), 4);
         System.out.println(new Date());
-        Node node = miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE), 3, true);
+        Node node = miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE), 4, true);
         game.move(node.getBestMove());
         System.out.println(new Date());
     }
