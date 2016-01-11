@@ -51,6 +51,7 @@ public class SetupBoard{
         totalplayboard.setRight(changePlayer);
     }
 
+
     public void placePieces(){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 2; j++){
