@@ -28,7 +28,7 @@ public class Knight extends Piece {
 
         return KnightTable[index];
     }
-    private int value = 3;
+    private int value = 30;
 
     public int getValue(){
         return value;

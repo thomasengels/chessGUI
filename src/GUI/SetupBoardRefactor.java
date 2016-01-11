@@ -106,9 +106,9 @@ public class SetupBoardRefactor implements Observer{
         for(int i = 0; i < 8; i++){
             for(int j = 6; j < 8; j++){
                 game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().setChesspieceImage(new Image(getClass().getResourceAsStream(
-                        game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getClass().getSimpleName() +
-                                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getColor() + ".png")));
-                game.getBoard().getTile(convertXYtoA1(i,j)).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
+                        game.getBoard().getTile(convertXYtoA1(i, j)).getPiece().getClass().getSimpleName() +
+                                game.getBoard().getTile(convertXYtoA1(i, j)).getPiece().getColor() + ".png")));
+                game.getBoard().getTile(convertXYtoA1(i, j)).getPiece().getChesspieceImageView().setOnMouseClicked(e -> {
                     if(!inRepositionState) {
                         /*
                         if you have selected a piece, but you change your mind, the suggested move tile color (blue) will be reset to black or white
@@ -162,7 +162,7 @@ public class SetupBoardRefactor implements Observer{
 
                 game.getBoard().getTile(i,j).setTilePossibleMoveImage(new Image(getClass().getResourceAsStream("chessboardBlue.jpg")));
                 game.getBoard().getTile(i,j).getChessboardTileImageView().setFitHeight(45);
-                game.getBoard().getTile(i,j).getChessboardTileImageView().setFitWidth(45);
+                game.getBoard().getTile(i, j).getChessboardTileImageView().setFitWidth(45);
                 game.getBoard().getTile(i,j).getChessboardTileImageView().autosize();
                 game.getBoard().getTile(i, j).getChessboardTileImageView().setOnMouseClicked(e -> {
                     if (inRepositionState) {
@@ -184,6 +184,9 @@ public class SetupBoardRefactor implements Observer{
 
                             checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) (e.getSceneX()) / 45) - 1, ((int) e.getSceneY()) / 45);
                         } else {
+                            if ((int) e.getSceneX() / 45 == 8) {
+                                System.out.printf("error");
+                            }
                             if (!placePieceOnOldLocation(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
                                 if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
                                     takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece());
@@ -191,20 +194,20 @@ public class SetupBoardRefactor implements Observer{
                                 repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                                 Move move = new Move(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)), pieceForReposition);
                                 game.move(move);
-                                }
-
-                                checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
                             }
 
-
-                            checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
-                            inRepositionState = false;
-
-                            pieceForReposition = null;
-
-
+                            checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
                         }
-                    });
+
+
+                        checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
+                        inRepositionState = false;
+
+                        pieceForReposition = null;
+
+
+                    }
+                });
 
 
                     checkboardPane.setConstraints(game.getBoard().getTile(i, j).getChessboardTileImageView(), i, j);

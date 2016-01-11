@@ -41,7 +41,7 @@ public class King extends Piece {
         return KingTableEndGame[index];
     }
 
-    private int value = 100;
+    private int value = 1000;
 
     public int getValue(){
         return value;

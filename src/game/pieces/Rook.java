@@ -28,7 +28,7 @@ public class Rook extends Piece {
 
         return RookTable[index];
     }
-    private int value = 5;
+    private int value = 50;
 
     public int getValue(){
         return value;

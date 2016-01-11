@@ -34,8 +34,8 @@ public class Tile{
     }
 
     public int compareRow (Tile tile) {
-        int thisRow = Integer.parseInt(location.substring(1, 1));
-        int tileRow = Integer.parseInt(tile.getLocation().substring(1, 1));
+        int thisRow = Integer.parseInt(location.substring(1, 2));
+        int tileRow = Integer.parseInt(tile.getLocation().substring(1, 2));
         return thisRow-tileRow;
     }
 

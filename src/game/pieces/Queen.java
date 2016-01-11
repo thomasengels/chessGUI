@@ -27,7 +27,7 @@ public class Queen extends Piece {
 
         return QueenTable[index];
     }
-    private int value = 9;
+    private int value = 90;
 
     public int getValue(){
         return value;

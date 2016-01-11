@@ -45,7 +45,18 @@ public abstract class Piece{
             position.setPiece(this);
             board.getTile(this.position.getLocation()).setPiece(this);
         } else {
-            throw new InvalidMoveException("This piece can't move there.");
+            if (getMoves(board).contains(position) || position.equals(this.position)) {
+                //board.setLastMove(position, this);
+                if (position.getPiece() != null) {
+                    position.getPiece().setPosition(null);
+                }
+                this.previousPosition = this.position.getLocation();
+                board.getTile(this.position.getLocation()).setPiece(null);
+                this.position = position;
+                position.setPiece(this);
+                board.getTile(this.position.getLocation()).setPiece(this);
+                throw new InvalidMoveException("This piece can't move there.");
+            }
         }
 
         return board;

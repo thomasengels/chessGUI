@@ -28,7 +28,7 @@ public class Pawn extends Piece {
 
         return PawnTable[index];
     }
-    private int value = 1;
+    private int value = 10;
 
     public int getValue(){
         return value;
@@ -43,12 +43,23 @@ public class Pawn extends Piece {
         List<Tile> result = new ArrayList<Tile>();
         Tile[] possibleTiles = getPossibleTiles(board);
         for(Tile tile : possibleTiles) {
-            if(position.compareColumn(tile) == 0) {
-                if(tile.getPiece() == null) {
+            if(tile != null) {
+                if (position.compareColumn(tile) == 0) {
+                    if (tile.getPiece() == null) {
+                        if (Math.abs(position.compareRow(tile)) == 2) {
+                            String column = position.toString().substring(0, 1);
+                            int row = Integer.parseInt(position.toString().substring(1, 2));
+                            column += (row + 1);
+                            if (board.getTile(column).getPiece() == null) {
+                                result.add(tile);
+                            }
+                        } else {
+                            result.add(tile);
+                        }
+                    }
+                } else if (tile.getPiece() != null && !tile.getPiece().getColor().equals(color)) {
                     result.add(tile);
                 }
-            } else if(tile.getPiece() != null && !tile.getPiece().getColor().equals(color)) {
-                result.add(tile);
             }
         }
         return result;

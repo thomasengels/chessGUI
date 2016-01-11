@@ -141,4 +141,23 @@ public class Board implements Cloneable{
     public void setLastMove(Tile location, Piece piece) {
         this.lastMove = Move.newInstance(new Move(location, piece));
     }
+
+    public boolean check(String color) {
+        Tile kingPosition = null;
+        for(Piece piece : pieces) {
+            if(piece.getColor().equals(color) && piece instanceof King) {
+                kingPosition = piece.getPosition();
+            }
+        }
+        for(Piece p : pieces) {
+            if(!p.getColor().equals(color)) {
+                for(Tile t : p.getMoves(this)) {
+                    if(t.equals(kingPosition)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

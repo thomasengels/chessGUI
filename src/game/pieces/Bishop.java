@@ -22,7 +22,7 @@ public class Bishop extends Piece {
                     -10,  5,  0,  0,  0,  0,  5,-10,
                     -20,-10,-40,-10,-10,-40,-10,-20,
             };
-    private int value = 3;
+    private int value = 30;
 
     public int getPieceSquareValue(int x, int y){
         int index = (x * (y - 1)) + y;

@@ -16,6 +16,8 @@ import java.util.List;
 public class MiniMax {
     private Evaluation ev = new Evaluation();
     private Node node;
+    private int alpha;
+    private int beta;
     private int counter = 0;
 
     public int getCounter() {
@@ -96,7 +98,13 @@ public class MiniMax {
         }
     }
 
-    public Node alphaBetaMax(Node state, int alpha, int beta, int depth) {
+    public Node startAlphaBeta(Node state, int depth){
+        alpha = Integer.MIN_VALUE;
+        beta = Integer.MAX_VALUE;
+        return alphaBetaMax(state, depth);
+    }
+
+    private Node alphaBetaMax(Node state, int depth) {
         if (depth == 0) {
             state.setValue(ev.getEvaluationValue(state));
             return state;
@@ -119,9 +127,16 @@ public class MiniMax {
                     } catch (InvalidMoveException e) {
                         e.printStackTrace();
                     }
-                    Node node = alphaBetaMin(temp, alpha, beta, depth - 1);
+                    Node node = alphaBetaMin(temp,depth - 1);
+                    if(bestValue.getValue() < node.getValue()) {
+                        bestValue = node;
+                        bestValue.addMove(depth, move);
+                    }
                     if(node.getValue() >= beta) {
                         return node;
+                    }
+                    if (node.getValue() > alpha) {
+                        alpha = node.getValue();
                     }
 
                     //bestValue = bestValue.getValue() < node.getValue() ? node : bestValue;
@@ -131,7 +146,7 @@ public class MiniMax {
         return bestValue;
     }
 
-    private Node alphaBetaMin(Node state, int alpha, int beta, int depth) {
+    private Node alphaBetaMin(Node state, int depth) {
         if (depth == 0) {
             state.setValue(ev.getEvaluationValue(state));
             return state;
@@ -156,7 +171,12 @@ public class MiniMax {
                         bestValue = node;
                         bestValue.addMove(depth, move);
                     }
-                    bestValue = bestValue.getValue() > node.getValue() ? node : bestValue;
+                    if(node.getValue() <= alpha) {
+                        return node;
+                    }
+                    if(node.getValue() < beta) {
+                        beta = node.getValue();
+                    }
                 }
             }
         }
