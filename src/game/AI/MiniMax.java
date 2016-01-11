@@ -19,17 +19,10 @@ public class MiniMax {
     private int alpha;
     private int beta;
     private int counter = 0;
+    private List<Move> moves;
 
     public int getCounter() {
         return counter;
-    }
-
-    public MiniMax(Board board, int depth) {
-        this.node = new Node(board, depth);
-    }
-
-    public MiniMax(Node node) {
-        this.node = node;
     }
 
     public Node calculate(Node state, int depth, boolean max) {
@@ -101,10 +94,14 @@ public class MiniMax {
     public Node startAlphaBeta(Node state, int depth){
         alpha = Integer.MIN_VALUE;
         beta = Integer.MAX_VALUE;
-        return alphaBetaMax(state, depth);
+        moves = new ArrayList<>();
+        Node n = alphaBetaMax(state, depth);
+        n.setMoves(moves);
+        return n;
     }
 
     private Node alphaBetaMax(Node state, int depth) {
+        counter++;
         if (depth == 0) {
             state.setValue(ev.getEvaluationValue(state));
             return state;
@@ -130,7 +127,7 @@ public class MiniMax {
                     Node node = alphaBetaMin(temp,depth - 1);
                     if(bestValue.getValue() < node.getValue()) {
                         bestValue = node;
-                        bestValue.addMove(depth, move);
+                        addMove(depth, move);
                     }
                     if(node.getValue() >= beta) {
                         return node;
@@ -147,11 +144,12 @@ public class MiniMax {
     }
 
     private Node alphaBetaMin(Node state, int depth) {
+        counter++;
         if (depth == 0) {
             state.setValue(ev.getEvaluationValue(state));
             return state;
         }
-        Node bestValue = new Node(state.getBoard(), Integer.MAX_VALUE);
+        Node bestValue = new Node(state.getBoard(), beta);
         Board board = bestValue.getBoard();
         for(Piece piece: board.getPieces()) {
             if (piece.getColor().equals("White")) {
@@ -166,10 +164,10 @@ public class MiniMax {
                     } catch (InvalidMoveException e) {
                         e.printStackTrace();
                     }
-                    Node node = calculate(temp, depth - 1, true);
+                    Node node = alphaBetaMax(temp, depth - 1);
                     if(bestValue.getValue() > node.getValue()) {
                         bestValue = node;
-                        bestValue.addMove(depth, move);
+                        addMove(depth, move);
                     }
                     if(node.getValue() <= alpha) {
                         return node;
@@ -181,6 +179,14 @@ public class MiniMax {
             }
         }
         return bestValue;
+    }
+
+    public void addMove(int index, Move move) {
+        try{
+            moves.set(index - 1, move);
+        } catch (Exception e) {
+            moves.add(index - 1, move);
+        }
     }
 }
 

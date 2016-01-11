@@ -49,15 +49,15 @@ public class Pawn extends Piece {
                         if (position.compareRow(tile) == 2) {
                             String column = position.toString().substring(0, 1);
                             int row = Integer.parseInt(position.toString().substring(1, 2));
-                            column += (row + 1);
-                            if (board.getTile(column).getPiece() != null) {
+                            column += (row - 1);
+                            if (board.getTile(column).getPiece() == null) {
                                 result.add(tile);
                             }
                         } else if (position.compareRow(tile) == -2) {
                             String column = position.toString().substring(0, 1);
                             int row = Integer.parseInt(position.toString().substring(1, 2));
-                            column += (row - 1);
-                            if (board.getTile(column).getPiece() != null) {
+                            column += (row + 1);
+                            if (board.getTile(column).getPiece() == null) {
                                 result.add(tile);
                             }
                         } else {

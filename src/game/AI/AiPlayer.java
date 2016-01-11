@@ -14,10 +14,10 @@ public class AiPlayer extends Observable {
     private String move;
     public void Move(Game game) {
         System.out.println("Ai has started");
-        miniMax = new MiniMax(game.getBoard(), 4);
+        miniMax = new MiniMax();
         System.out.println(new Date());
         Node node = miniMax.calculate(new Node(game.getBoard(), Integer.MIN_VALUE), 3, true);
-        //Node node = miniMax.startAlphaBeta(new Node(game.getBoard(), Integer.MIN_VALUE), 4);
+        //Node node = miniMax.startAlphaBeta(new Node(game.getBoard(), 0), 5);
         System.out.println(new Date());
         String[] locations = node.getBestMove().split(",");
         game.getBoard().setLastMove(game.getBoard().getTile(locations[1]),game.getBoard().getTile(locations[0]).getPiece());
@@ -29,7 +29,7 @@ public class AiPlayer extends Observable {
 
 
         game.move(move);
-        System.out.printf("%d", miniMax.getCounter());
+        System.out.printf("%d iterations\n", miniMax.getCounter());
     }
 
     public Move getMove(Game game){

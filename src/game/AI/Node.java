@@ -59,4 +59,8 @@ public class Node {
         Move move = moves.get(moves.size()-1);
         return move.getOldLocation() + "," + move.getLocation().getLocation();
     }
+
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
+    }
 }
