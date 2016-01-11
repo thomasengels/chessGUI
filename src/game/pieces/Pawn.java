@@ -23,13 +23,14 @@ public class Pawn extends Piece {
                     {0, 0, 0, 0, 0, 0, 0, 0}
             };
 
-    public int getPieceSquareValue(int x, int y){
+    public int getPieceSquareValue(int x, int y) {
 
         return PawnTable[x][y];
     }
+
     private int value = 10;
 
-    public int getValue(){
+    public int getValue() {
         return value;
     }
 
@@ -41,15 +42,22 @@ public class Pawn extends Piece {
     public List<Tile> getMoves(Board board) {
         List<Tile> result = new ArrayList<Tile>();
         Tile[] possibleTiles = getPossibleTiles(board);
-        for(Tile tile : possibleTiles) {
-            if(tile != null) {
+        for (Tile tile : possibleTiles) {
+            if (tile != null) {
                 if (position.compareColumn(tile) == 0) {
                     if (tile.getPiece() == null) {
-                        if (Math.abs(position.compareRow(tile)) == 2) {
+                        if (position.compareRow(tile) == 2) {
                             String column = position.toString().substring(0, 1);
                             int row = Integer.parseInt(position.toString().substring(1, 2));
                             column += (row + 1);
-                            if (board.getTile(column).getPiece() == null) {
+                            if (board.getTile(column).getPiece() != null) {
+                                result.add(tile);
+                            }
+                        } else if (position.compareRow(tile) == -2) {
+                            String column = position.toString().substring(0, 1);
+                            int row = Integer.parseInt(position.toString().substring(1, 2));
+                            column += (row - 1);
+                            if (board.getTile(column).getPiece() != null) {
                                 result.add(tile);
                             }
                         } else {
@@ -74,17 +82,17 @@ public class Pawn extends Piece {
         if ((row == 2 && color.equals("White")) || (row == 7 && color.equals("Black"))) {
             tilesString = column + (row + (modifier * 2)) + ",";
         }
-        tilesString += column + (row+modifier) + ",";
+        tilesString += column + (row + modifier) + ",";
         switch (columnIndex) {
             case 0:
-                tilesString += columns[columnIndex + 1] + (row+modifier)+",";
+                tilesString += columns[columnIndex + 1] + (row + modifier) + ",";
                 break;
             case 7:
-                tilesString += columns[columnIndex - 1] + (row+modifier) + ",";
+                tilesString += columns[columnIndex - 1] + (row + modifier) + ",";
                 break;
             default:
-                tilesString += columns[columnIndex + 1] + (row+modifier)+",";
-                tilesString += columns[columnIndex - 1] + (row+modifier) + ",";
+                tilesString += columns[columnIndex + 1] + (row + modifier) + ",";
+                tilesString += columns[columnIndex - 1] + (row + modifier) + ",";
         }
         return board.getTiles(tilesString.split(","));
     }
