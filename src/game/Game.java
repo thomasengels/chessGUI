@@ -26,6 +26,11 @@ public class Game extends Observable {
     private boolean whitesTurn;
     private Evaluation ev;
     private AiPlayer aiPlayer;
+    private AiPlayer aiABplayer;
+
+    public AiPlayer getAiABplayer() {
+        return aiABplayer;
+    }
 
     public AiPlayer getAiPlayer(){
         return this.aiPlayer;
@@ -34,6 +39,7 @@ public class Game extends Observable {
     public Game() {
         ev = new Evaluation();
         aiPlayer = new AiPlayer();
+        aiABplayer = new AiPlayer();
 
         whitesTurn = true;
         board = new Board();
@@ -125,6 +131,13 @@ public class Game extends Observable {
 
         if(!whitesTurn){
             aiPlayer.Move(this);
+        }
+    }
+
+    public void switchTurnsAB(){
+        whitesTurn = true;
+        if(whitesTurn){
+            aiABplayer.MoveAB(this);
         }
     }
 }

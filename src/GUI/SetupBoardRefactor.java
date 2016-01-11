@@ -31,6 +31,8 @@ public class SetupBoardRefactor implements Observer{
     @FXML
     private static Button changeplayer = new Button();
     @FXML
+    private static Button AIPlayerAB = new Button();
+    @FXML
     private VBox lostPieces = new VBox();
     private boolean inRepositionState = false;
     private Piece pieceForReposition;
@@ -61,10 +63,14 @@ public class SetupBoardRefactor implements Observer{
 
     public void addRightSideControls(){
         changeplayer = new Button();
+        AIPlayerAB = new Button();
+        AIPlayerAB.setText("AI player Alpha Beta");
+        AIPlayerAB.addEventHandler(ActionEvent.ACTION, actionEvent -> game.switchTurnsAB());
         changeplayer.setText("Change to AI player");
         changeplayer.addEventHandler(ActionEvent.ACTION, actionEvent -> ((Button) actionEvent.getSource()).setText("AI is playing"));
         changeplayer.addEventHandler(ActionEvent.ACTION, actionEvent -> game.switchTurns());
         rightSide.getChildren().add(changeplayer);
+        rightSide.getChildren().add(AIPlayerAB);
         MainBorderPane.setRight(rightSide);
     }
 
@@ -172,33 +178,36 @@ public class SetupBoardRefactor implements Observer{
                               if lostpieces vbox is visible, the extra width of screen has to be taken in account  (int) (e.getSceneX() / 45) - 1
                              */
                         if (lostPieces.getWidth() > 0) {
-                            if (!placePieceOnOldLocation(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)))) {
+                            if (!placePieceOnOldLocation(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45))) &&
+                                    isPossibleMove(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)))) {
                                 if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)))) {
                                         takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)).getPiece());
                                 }
                                 repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                                 Move move = new Move(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)), pieceForReposition);
                                 game.move(move);
+                                checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) (e.getSceneX()) / 45) - 1, ((int) e.getSceneY()) / 45);
                             }
 
 
-                            checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) (e.getSceneX()) / 45) - 1, ((int) e.getSceneY()) / 45);
+
                         } else {
                             if ((int) e.getSceneX() / 45 == 8) {
                                 System.out.printf("error");
                             }
-                            if (!placePieceOnOldLocation(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
+                            if (!placePieceOnOldLocation(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45))) &&
+                                    isPossibleMove(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
                                 if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)))) {
                                     takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)).getPiece());
                                 }
                                 repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                                 Move move = new Move(game.getBoard().getTile(convertXYtoA1((int) e.getSceneX() / 45, (int) e.getSceneY() / 45)), pieceForReposition);
                                 game.move(move);
+                                checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
                             }
 
-                            checkboardPane.setConstraints(pieceForReposition.getChesspieceImageView(), ((int) e.getSceneX()) / 45, ((int) e.getSceneY()) / 45);
-                        }
 
+                        }
 
                         checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
                         inRepositionState = false;
@@ -223,6 +232,13 @@ public class SetupBoardRefactor implements Observer{
         }
         return false;
 
+    }
+
+    public boolean isPossibleMove(Tile tile){
+        if(pieceForReposition.getMoves(game.getBoard()).contains(tile)){
+            return true;
+        }
+        return false;
     }
 
     public BorderPane getTotalplayboard(){
