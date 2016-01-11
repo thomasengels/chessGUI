@@ -24,12 +24,4 @@ public class Main extends Application{
         launch(args);
     }
 
-    /*
-    public static void main(String[] args) {
-        Game game = new Game();
-        SetupBoard setup = new SetupBoard();
-        setup.setup(game);
-        System.out.printf(game.getBoard().toString());
-    }
-    */
 }
