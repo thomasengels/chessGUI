@@ -29,7 +29,6 @@ public class Board implements Cloneable{
         for (Iterator<Piece> it = pieces.iterator(); it.hasNext();) {
             Piece temp = it.next();
             if(temp.getPosition() == null) {
-                System.out.printf("removed %s", temp);
                 it.remove();
             }
         }

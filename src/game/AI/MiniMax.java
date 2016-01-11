@@ -95,12 +95,12 @@ public class MiniMax {
         alpha = Integer.MIN_VALUE;
         beta = Integer.MAX_VALUE;
         moves = new ArrayList<>();
-        Node n = alphaBetaMin(state, depth);
+        Node n = alphaBetaMin(state, alpha, beta, depth);
         n.setMoves(moves);
         return n;
     }
 
-    private Node alphaBetaMax(Node state, int depth) {
+    private Node alphaBetaMax(Node state,int alpha, int beta, int depth) {
         counter++;
         if (depth == 0) {
             state.setValue(ev.getEvaluationValue(state));
@@ -124,7 +124,7 @@ public class MiniMax {
                     } catch (InvalidMoveException e) {
                         e.printStackTrace();
                     }
-                    Node node = alphaBetaMin(temp,depth - 1);
+                    Node node = alphaBetaMin(temp,alpha, beta, depth - 1);
                     if(bestValue.getValue() < node.getValue()) {
                         bestValue = node;
                         addMove(depth, move);
@@ -143,7 +143,7 @@ public class MiniMax {
         return bestValue;
     }
 
-    private Node alphaBetaMin(Node state, int depth) {
+    private Node alphaBetaMin(Node state,int alpha, int beta, int depth) {
         counter++;
         if (depth == 0) {
             state.setValue(ev.getEvaluationValue(state));
@@ -164,7 +164,7 @@ public class MiniMax {
                     } catch (InvalidMoveException e) {
                         e.printStackTrace();
                     }
-                    Node node = alphaBetaMax(temp, depth - 1);
+                    Node node = alphaBetaMax(temp,alpha, beta, depth - 1);
                     if(bestValue.getValue() > node.getValue()) {
                         bestValue = node;
                         addMove(depth, move);
