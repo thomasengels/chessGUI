@@ -95,7 +95,7 @@ public class MiniMax {
         alpha = Integer.MIN_VALUE;
         beta = Integer.MAX_VALUE;
         moves = new ArrayList<>();
-        Node n = alphaBetaMax(state, depth);
+        Node n = alphaBetaMin(state, depth);
         n.setMoves(moves);
         return n;
     }

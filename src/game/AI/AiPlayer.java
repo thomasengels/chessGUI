@@ -34,10 +34,9 @@ public class AiPlayer extends Observable {
 
     public void MoveAB(Game game) {
         System.out.println("Ai has started");
-        miniMax = new MiniMax(game.getBoard(), 4);
+        miniMax = new MiniMax();
         System.out.println(new Date());
-        Node node = miniMax.startAlphaBeta(new Node(game.getBoard(), Integer.MIN_VALUE), 3);
-        //Node node = miniMax.startAlphaBeta(new Node(game.getBoard(), Integer.MIN_VALUE), 4);
+        Node node = miniMax.startAlphaBeta(new Node(game.getBoard(), 0), 5);
         System.out.println(new Date());
         String[] locations = node.getBestMove().split(",");
         game.getBoard().setLastMove(game.getBoard().getTile(locations[1]),game.getBoard().getTile(locations[0]).getPiece());
