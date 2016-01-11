@@ -3,13 +3,16 @@ package GUI;
 import game.AI.AiPlayer;
 import game.AI.Evaluation;
 import game.Game;
+import game.board.Board;
 import game.board.Move;
 import game.board.Tile;
 import game.pieces.Piece;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -31,9 +34,9 @@ public class SetupBoardRefactor implements Observer{
     @FXML
     private static Button changeplayer = new Button();
     @FXML
-    private static Button AIPlayerAB = new Button();
-    @FXML
     private VBox lostPieces = new VBox();
+    @FXML
+    private Label info = new Label();
     private boolean inRepositionState = false;
     private Piece pieceForReposition;
     private Game game;
@@ -63,14 +66,10 @@ public class SetupBoardRefactor implements Observer{
 
     public void addRightSideControls(){
         changeplayer = new Button();
-        AIPlayerAB = new Button();
-        AIPlayerAB.setText("AI player Alpha Beta");
-        AIPlayerAB.addEventHandler(ActionEvent.ACTION, actionEvent -> game.switchTurnsAB());
         changeplayer.setText("Change to AI player");
         changeplayer.addEventHandler(ActionEvent.ACTION, actionEvent -> ((Button) actionEvent.getSource()).setText("AI is playing"));
         changeplayer.addEventHandler(ActionEvent.ACTION, actionEvent -> game.switchTurns());
         rightSide.getChildren().add(changeplayer);
-        rightSide.getChildren().add(AIPlayerAB);
         MainBorderPane.setRight(rightSide);
     }
 
@@ -207,8 +206,9 @@ public class SetupBoardRefactor implements Observer{
                             }
 
 
-                        }
 
+
+                        }
                         checkboardPane.getChildren().addAll(pieceForReposition.getChesspieceImageView());
                         inRepositionState = false;
 
@@ -286,6 +286,7 @@ public class SetupBoardRefactor implements Observer{
 
     public void takePieceFromBoard(Piece piece){
         lostPieces.getChildren().add(piece.getChesspieceImageView());
+        System.out.println(piece.getChesspieceImageView().getImage().toString());
         checkboardPane.getChildren().remove(piece.getChesspieceImageView());
     }
 
@@ -293,7 +294,7 @@ public class SetupBoardRefactor implements Observer{
     @Override
     public void update(Observable o, Object arg) {
 
-        if (!game.isWhitesTurn()) {
+        if (!game.isWhitesTurn() && o instanceof AiPlayer) {
 
             if (checkIfTileOccupid(((AiPlayer) arg).getMove(game).getLocation())) {
                 takePieceFromBoard(((AiPlayer) arg).getMove(game).getLocation().getPiece());
@@ -302,8 +303,29 @@ public class SetupBoardRefactor implements Observer{
             checkboardPane.setConstraints(((AiPlayer) arg).getMove(game).getPiece().getChesspieceImageView(), convertA1toXY(((AiPlayer) arg).getMove(game).getLocation().getLocation())[0], convertA1toXY(((AiPlayer) arg).getMove(game).getLocation().getLocation())[1]);
 
             System.out.println("AI is done");
-            changeplayer.setText("Change to AI player");
+            if(game.getBoard().check("White")){
+                info.setText("SCHAAK!! zet uw koning veilig");
+                rightSide.getChildren().add(info);
+            }
+            else {
+                if (rightSide.getChildren().contains(info)){
+                    rightSide.getChildren().remove(info);
+                }
+            }
             game.switchTurns();
+        }
+        else if(o instanceof Board){
+            Label gameEnded = new Label();
+            if(game.isWhitesTurn()){
+                gameEnded.setText("U bent gewonnen!!!");
+            }
+            else{
+                gameEnded.setText("De computer is gewonnen :(");
+            }
+
+            rightSide.getChildren().add(gameEnded);
+
+            getTotalplayboard().setDisable(true);
         }
     }
 }

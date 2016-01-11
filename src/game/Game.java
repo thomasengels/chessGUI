@@ -133,11 +133,4 @@ public class Game extends Observable {
             aiPlayer.Move(this);
         }
     }
-
-    public void switchTurnsAB(){
-        whitesTurn = true;
-        if(whitesTurn){
-            aiABplayer.MoveAB(this);
-        }
-    }
 }

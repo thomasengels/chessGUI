@@ -16,6 +16,7 @@ public class Main extends Application{
         SetupBoardRefactor setup = new SetupBoardRefactor();
         Game game = new Game();
         game.getAiPlayer().addObserver(setup);
+        game.getBoard().addObserver(setup);
         setup.setup(game);
         primaryStage.setScene(new Scene(setup.getTotalplayboard(), setup.getDimensions()[0], setup.getDimensions()[1]));
         primaryStage.show();

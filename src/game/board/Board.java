@@ -3,14 +3,12 @@ package game.board;
 import game.pieces.*;
 
 import javax.rmi.CORBA.Tie;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Glenn on 1-10-2015.
  */
-public class Board implements Cloneable{
+public class Board extends Observable {
     private Tile[][] tiles;
     private String[] columns;
     private List<Piece> pieces;
@@ -31,6 +29,12 @@ public class Board implements Cloneable{
             if(temp.getPosition() == null) {
                 System.out.printf("removed %s", temp);
                 it.remove();
+
+                if(temp instanceof King){
+                    setChanged();
+                    notifyObservers(this);
+                }
+
             }
         }
     }
