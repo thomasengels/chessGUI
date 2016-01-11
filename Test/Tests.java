@@ -112,6 +112,6 @@ public class Tests {
     public void testAlogrithm() {
         int depth = 3;
         Node node = algorithm.calculate(new Node(game.getBoard(), 0), 3, true);
-        assertEquals(3, node.getMoves().size());
+        assertEquals(depth, node.getMoves().size());
     }
 }
