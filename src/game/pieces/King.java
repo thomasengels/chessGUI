@@ -11,16 +11,16 @@ import java.util.List;
  * Created by Glenn on 6-10-2015.
  */
 public class King extends Piece {
-    private final short[] KingTable = new short[]
+    private final short[][] KingTable = new short[][]
             {
-                    -30, -40, -40, -50, -50, -40, -40, -30,
-                    -30, -40, -40, -50, -50, -40, -40, -30,
-                    -30, -40, -40, -50, -50, -40, -40, -30,
-                    -30, -40, -40, -50, -50, -40, -40, -30,
-                    -20, -30, -30, -40, -40, -30, -30, -20,
-                    -10, -20, -20, -20, -20, -20, -20, -10,
-                    20,  20,   0,   0,   0,   0,  20,  20,
-                    20,  30,  10,   0,   0,  10,  30,  20
+                    {-30, -40, -40, -50, -50, -40, -40, -30},
+                    {-30, -40, -40, -50, -50, -40, -40, -30},
+                    {-30, -40, -40, -50, -50, -40, -40, -30},
+                    {-30, -40, -40, -50, -50, -40, -40, -30},
+                    {-20, -30, -30, -40, -40, -30, -30, -20},
+                    {-10, -20, -20, -20, -20, -20, -20, -10},
+                    {20, 20, 0, 0, 0, 0, 20, 20},
+                    {20, 30, 10, 0, 0, 10, 30, 20}
             };
 
     private final short[] KingTableEndGame = new short[]
@@ -36,9 +36,7 @@ public class King extends Piece {
             };
 
     public int getPieceSquareValue(int x, int y){
-        int index = (x * (y - 1)) + y;
-
-        return KingTableEndGame[index];
+        return KingTable[x][y];
     }
 
     private int value = 1000;

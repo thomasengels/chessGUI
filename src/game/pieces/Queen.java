@@ -11,21 +11,19 @@ import java.util.List;
  * Created by Glenn on 6-10-2015.
  */
 public class Queen extends Piece {
-    private final Short[] QueenTable = {
-            -20,-10,-10, -5, -5,-10,-10,-20,
-            -10,  0,  0,  0,  0,  0,  0,-10,
-            -10,  0,  5,  5,  5,  5,  0,-10,
-            -5,  0,  5,  5,  5,  5,  0, -5,
-            0,  0,  5,  5,  5,  5,  0, -5,
-            -10,  5,  5,  5,  5,  5,  0,-10,
-            -10,  0,  5,  0,  0,  0,  0,-10,
-            -20,-10,-10, -5, -5,-10,-10,-20
+    private final Short[][] QueenTable = {
+            {-20, -10, -10, -5, -5, -10, -10, -20},
+            {-10, 0, 0, 0, 0, 0, 0, -10},
+            {-10, 0, 5, 5, 5, 5, 0, -10},
+            {-5, 0, 5, 5, 5, 5, 0, -5},
+            {0, 0, 5, 5, 5, 5, 0, -5},
+            {-10, 5, 5, 5, 5, 5, 0, -10},
+            {-10, 0, 5, 0, 0, 0, 0, -10},
+            {-20, -10, -10, -5, -5, -10, -10, -20}
     };
 
     public int getPieceSquareValue(int x, int y){
-        int index = (x * (y - 1)) + y;
-
-        return QueenTable[index];
+        return QueenTable[x][y];
     }
     private int value = 90;
 

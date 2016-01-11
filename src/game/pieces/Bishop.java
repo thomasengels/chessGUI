@@ -11,23 +11,21 @@ import java.util.List;
  * Created by Glenn on 5-10-2015.
  */
 public class Bishop extends Piece {
-    private final short[] BishopTable = new short[]
+    private final short[][] BishopTable = new short[][]
             {
-                    -20,-10,-10,-10,-10,-10,-10,-20,
-                    -10,  0,  0,  0,  0,  0,  0,-10,
-                    -10,  0,  5, 10, 10,  5,  0,-10,
-                    -10,  5,  5, 10, 10,  5,  5,-10,
-                    -10,  0, 10, 10, 10, 10,  0,-10,
-                    -10, 10, 10, 10, 10, 10, 10,-10,
-                    -10,  5,  0,  0,  0,  0,  5,-10,
-                    -20,-10,-40,-10,-10,-40,-10,-20,
+                {-20,-10,-10,-10,-10,-10,-10,-20},
+                {-10,  0,  0,  0,  0,  0,  0,-10},
+                {-10,  0,  5, 10, 10,  5,  0,-10},
+                {-10,  5,  5, 10, 10,  5,  5,-10},
+                {-10,  0, 10, 10, 10, 10,  0,-10},
+                { -10, 10, 10, 10, 10, 10, 10,-10},
+                {-10,  5,  0,  0,  0,  0,  5,-10},
+                {-20,-10,-40,-10,-10,-40,-10,-20}
             };
     private int value = 30;
 
     public int getPieceSquareValue(int x, int y){
-        int index = (x * (y - 1)) + y;
-
-        return BishopTable[index];
+        return BishopTable[x][y];
     }
     public int getValue(){
         return value;

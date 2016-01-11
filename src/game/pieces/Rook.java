@@ -11,22 +11,20 @@ import java.util.List;
  * Created by Glenn on 3-10-2015.
  */
 public class Rook extends Piece {
-    private final Short[] RookTable = {
-            0,  0,  0,  0,  0,  0,  0,  0,
-            5, 10, 10, 10, 10, 10, 10,  5,
-            -5,  0,  0,  0,  0,  0,  0, -5,
-            -5,  0,  0,  0,  0,  0,  0, -5,
-            -5,  0,  0,  0,  0,  0,  0, -5,
-            -5,  0,  0,  0,  0,  0,  0, -5,
-            -5,  0,  0,  0,  0,  0,  0, -5,
-            0,  0,  0,  5,  5,  0,  0,  0
+    private final Short[][] RookTable = {
+            {0,  0,  0,  0,  0,  0,  0,  0},
+                    {5, 10, 10, 10, 10, 10, 10,  5},
+                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                                    {-5,  0,  0,  0,  0,  0,  0, -5},
+                                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                                                    {-5,  0,  0,  0,  0,  0,  0, -5},
+                                                            {-5,  0,  0,  0,  0,  0,  0, -5},
+                                                                    {0,  0,  0,  5,  5,  0,  0,  0}
     };
 
 
     public int getPieceSquareValue(int x, int y){
-        int index = (x * (y - 1)) + y;
-
-        return RookTable[index];
+        return RookTable[x][y];
     }
     private int value = 50;
 

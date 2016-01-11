@@ -11,22 +11,21 @@ import java.util.List;
  * Created by Glenn on 1-10-2015.
  */
 public class Pawn extends Piece {
-    private final short[] PawnTable = new short[]
+    private final short[][] PawnTable = new short[][]
             {
-                    0,  0,  0,  0,  0,  0,  0,  0,
-                    50, 50, 50, 50, 50, 50, 50, 50,
-                    10, 10, 20, 30, 30, 20, 10, 10,
-                    5,  5, 10, 27, 27, 10,  5,  5,
-                    0,  0,  0, 25, 25,  0,  0,  0,
-                    5, -5,-10,  0,  0,-10, -5,  5,
-                    5, 10, 10,-25,-25, 10, 10,  5,
-                    0,  0,  0,  0,  0,  0,  0,  0
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {50, 50, 50, 50, 50, 50, 50, 50},
+                    {10, 10, 20, 30, 30, 20, 10, 10},
+                    {5, 5, 10, 27, 27, 10, 5, 5},
+                    {0, 0, 0, 25, 25, 0, 0, 0},
+                    {5, -5, -10, 0, 0, -10, -5, 5},
+                    {5, 10, 10, -25, -25, 10, 10, 5},
+                    {0, 0, 0, 0, 0, 0, 0, 0}
             };
 
     public int getPieceSquareValue(int x, int y){
-        int index = (x * (y - 1)) + y;
 
-        return PawnTable[index];
+        return PawnTable[x][y];
     }
     private int value = 10;
 

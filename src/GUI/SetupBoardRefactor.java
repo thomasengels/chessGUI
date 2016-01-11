@@ -174,7 +174,7 @@ public class SetupBoardRefactor implements Observer{
                         if (lostPieces.getWidth() > 0) {
                             if (!placePieceOnOldLocation(pieceForReposition, game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)))) {
                                 if (checkIfTileOccupid(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)))) {
-                                    takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)).getPiece());
+                                        takePieceFromBoard(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)).getPiece());
                                 }
                                 repaintBoardInitial(pieceForReposition.getMoves(game.getBoard()));
                                 Move move = new Move(game.getBoard().getTile(convertXYtoA1((int) (e.getSceneX() / 45) - 1, (int) e.getSceneY() / 45)), pieceForReposition);
