@@ -27,7 +27,6 @@ public class Board extends Observable {
         for (Iterator<Piece> it = pieces.iterator(); it.hasNext();) {
             Piece temp = it.next();
             if(temp.getPosition() == null) {
-                System.out.printf("removed %s", temp);
                 it.remove();
 
                 if(temp instanceof King){
